@@ -135,7 +135,7 @@ Create a `.env` file in the root directory:
 MISTRAL_API_KEY=your_api_key_here
 ```
 
-> ⚠️ Never commit your `.env` file. It is already included in `.gitignore`.
+
 
 ### 4. Run the App
 
