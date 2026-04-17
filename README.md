@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎓 AI Internship Finder Agent
+#  AI Internship Finder Agent
 
 **An AI-powered agent that helps students discover relevant internship opportunities based on their skills and preferred location.**
 
@@ -16,7 +16,7 @@
 
 ---
 
-## 📌 Table of Contents
+##  Table of Contents
 
 - [Overview](#-overview)
 - [Problem Statement](#-problem-statement)
@@ -32,13 +32,13 @@
 
 ---
 
-## 🧠 Overview
+##  Overview
 
 Finding the right internship is hard — especially when you're a student with limited time and specific skills. **AI Internship Finder Agent** cuts through the noise by using a large language model to generate **personalized, context-aware internship role suggestions** in seconds. Just enter your skills and location, and let the agent do the rest.
 
 ---
 
-## ❗ Problem Statement
+##  Problem Statement
 
 Students consistently face three core challenges in internship discovery:
 
@@ -50,7 +50,7 @@ Students consistently face three core challenges in internship discovery:
 
 ---
 
-## ✅ Solution
+##  Solution
 
 This agent takes a **simple 2-input approach** and turns it into intelligent, actionable output:
 
@@ -62,7 +62,7 @@ No sign-ups. No job board scraping. Just instant AI-driven personalization.
 
 ---
 
-## ✨ Features
+##  Features
 
 ### Phase 1 (Completed ✅)
 
@@ -74,7 +74,7 @@ No sign-ups. No job board scraping. Just instant AI-driven personalization.
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |-------|------------|
@@ -85,7 +85,7 @@ No sign-ups. No job board scraping. Just instant AI-driven personalization.
 
 ---
 
-## 🔄 System Workflow
+##  System Workflow
 
 ```
 User Input (Skills + Location)
@@ -107,7 +107,7 @@ User Input (Skills + Location)
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -147,7 +147,7 @@ Open your browser at `http://localhost:8501` and start exploring internships!
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```text
 AI-INTERNSHIP-AGENT/
@@ -202,7 +202,7 @@ AI-INTERNSHIP-AGENT/
 ```
 ---
 
-## 🗺️ Roadmap
+##  Roadmap
 
 | Phase | Feature | Status |
 |-------|---------|--------|
@@ -215,7 +215,7 @@ AI-INTERNSHIP-AGENT/
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! To get started:
 
