@@ -59,15 +59,15 @@ This AI agent:
 
 ## Getting Started
 
-### 1. Install dependencies  
-pip install -r requirements.txt  
+# 1. Install dependencies
+pip install -r requirements.txt
 
-### 2. Add API Key  
-Create a `.env` file and add:  
-MISTRAL_API_KEY=your_api_key_here  
+# 2. Add API Key
+# Create a .env file and add:
+MISTRAL_API_KEY=your_api_key_here
 
-### 3. Run the application  
-streamlit run app.py  
+# 3. Run the application
+streamlit run app.py
 
 ---
 
