@@ -1,96 +1,206 @@
-# AI Internship Finder Agent
+<div align="center">
 
-An AI-powered agent that helps students discover relevant internship roles based on their skills and preferred location.
+# 🎓 AI Internship Finder Agent
 
-> Built as part of the AI Agents for India Track under GirlScript Summer of Code 2026.
+**An AI-powered agent that helps students discover relevant internship opportunities based on their skills and preferred location.**
 
----
+[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.x-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![Mistral AI](https://img.shields.io/badge/Mistral-AI-F97316?style=flat-square)](https://mistral.ai)
+[![GSSoC 2026](https://img.shields.io/badge/GSSoC-2026-6366F1?style=flat-square)](https://gssoc.girlscript.tech)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=flat-square)](LICENSE)
 
-## Overview
+*Built as part of the **AI Agents for India** track under [GirlScript Summer of Code 2026](https://gssoc.girlscript.tech)*
 
-This project simplifies internship discovery by using AI to generate personalized internship role suggestions instantly.
-
----
-
-## Problem Statement
-
-Students often struggle to:
-- Find relevant internships  
-- Filter opportunities based on skills  
-- Get quick and personalized suggestions  
+</div>
 
 ---
 
-## Solution
+## 📌 Table of Contents
 
-This AI agent:
-- Takes user input (skills and location)
-- Uses an LLM (Mistral API) to understand the query
-- Generates concise internship role suggestions
-- Displays results in a clean user interface
-
----
-
-## Features (Phase 1)
-
-- Skill-based internship suggestions  
-- Location-based filtering  
-- AI-powered recommendations using Mistral  
-- Interactive UI using Streamlit  
-- Clean card-based result display  
-- Optimized prompt for structured output  
+- [Overview](#-overview)
+- [Problem Statement](#-problem-statement)
+- [Solution](#-solution)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [System Workflow](#-system-workflow)
+- [Getting Started](#-getting-started)
+- [Project Structure](#-project-structure)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
+- [Author](#-author)
 
 ---
 
-## Tech Stack
+## 🧠 Overview
 
-- Python  
-- Streamlit  
-- Mistral API  
-- python-dotenv  
+Finding the right internship is hard — especially when you're a student with limited time and specific skills. **AI Internship Finder Agent** cuts through the noise by using a large language model to generate **personalized, context-aware internship role suggestions** in seconds. Just enter your skills and location, and let the agent do the rest.
 
 ---
 
-## System Workflow
+## ❗ Problem Statement
 
-![Workflow](docs/flowcharts/flowchart.png)
+Students consistently face three core challenges in internship discovery:
+
+| Challenge | Impact |
+|-----------|--------|
+| Sifting through irrelevant listings | Wastes hours of research time |
+| No skill-based filtering | Mismatched applications, lower success rates |
+| Slow, generic suggestions | Discourages proactive job seeking |
 
 ---
 
-## Getting Started
+## ✅ Solution
 
-### 1. Install Dependencies
+This agent takes a **simple 2-input approach** and turns it into intelligent, actionable output:
+
+1. **Input** — User provides their skills and preferred location
+2. **Process** — A Mistral LLM interprets the query with an optimized prompt
+3. **Output** — Structured, relevant internship role suggestions rendered in a clean UI
+
+No sign-ups. No job board scraping. Just instant AI-driven personalization.
+
+---
+
+## ✨ Features
+
+### Phase 1 (Completed ✅)
+
+- 🔍 **Skill-based suggestions** — Tailored roles based on what you know
+- 📍 **Location-aware filtering** — Relevant opportunities for your city or region
+- 🤖 **Mistral LLM integration** — Fast, accurate role recommendations
+- 🖥️ **Streamlit UI** — Clean, responsive, card-based result display
+- ⚡ **Optimized prompting** — Structured output with minimal hallucination
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Language | Python 3.8+ |
+| Frontend | Streamlit |
+| AI Model | Mistral API |
+| Config | python-dotenv |
+
+---
+
+## 🔄 System Workflow
+
+```
+User Input (Skills + Location)
+        │
+        ▼
+  Prompt Builder
+        │
+        ▼
+  Mistral LLM API
+        │
+        ▼
+  Response Parser
+        │
+        ▼
+  Streamlit Card UI  ──►  User sees internship suggestions
+```
+
+> Full flowchart available at [`docs/flowcharts/flowchart.png`](docs/flowcharts/flowchart.png)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.8 or above
+- A valid [Mistral API key](https://console.mistral.ai/)
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/ai-internship-finder.git
+cd ai-internship-finder
+```
+
+### 2. Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-### 2. Add API Key
-Create a .env file and add:
+### 3. Configure Environment
+
+Create a `.env` file in the root directory:
+
+```env
 MISTRAL_API_KEY=your_api_key_here
+```
 
-### 3. Run the Application
+> ⚠️ Never commit your `.env` file. It is already included in `.gitignore`.
+
+### 4. Run the App
+
+```bash
 streamlit run app.py
+```
+
+Open your browser at `http://localhost:8501` and start exploring internships!
+
+---
+
+## 📁 Project Structure
+
+```
+ai-internship-finder/
+├── app.py                  # Main Streamlit application
+├── agent.py                # Core AI agent logic
+├── prompts/
+│   └── internship_prompt.py  # Optimized LLM prompt template
+├── docs/
+│   └── flowcharts/
+│       └── flowchart.png   # System workflow diagram
+├── .env.example            # Sample environment config
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 🗺️ Roadmap
+
+| Phase | Feature | Status |
+|-------|---------|--------|
+| 1 | Core AI agent + Streamlit UI | ✅ Done |
+| 2 | Search history with database integration | 🔜 Upcoming |
+| 2 | Response caching & regeneration | 🔜 Upcoming |
+| 3 | Agent evaluation metrics dashboard | 🔜 Upcoming |
+| 3 | User authentication | 🔜 Upcoming |
+| 4 | AI-based resume builder | 🔜 Upcoming |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! To get started:
+
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature/your-feature-name`
+3. Make your changes and commit: `git commit -m "Add your message here"`
+4. Push to your fork: `git push origin feature/your-feature-name`
+5. Open a Pull Request
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting any changes.
+
+---
+
+## 👤 Author
+
+**Ronit Maheshwari**
 
 
 ---
 
-## Current Status
+<div align="center">
 
-Phase 1 completed:  
-- Core AI agent implemented  
-- UI developed  
-- Prompt optimization completed  
+Made with ❤️ for students, by a student &nbsp;|&nbsp; GirlScript Summer of Code 2026
 
----
-
-## Upcoming Features
-
-- Database integration for search history  
-- Regeneration and caching  
-- Agent evaluation metrics  
-- User authentication  
-- AI-based resume builder  
-
----
-
-## Author
-
-Ronit Maheshwari
+</div>
