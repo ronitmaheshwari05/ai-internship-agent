@@ -149,8 +149,6 @@ Open your browser at `http://localhost:8501` and start exploring internships!
 
 ## 📁 Project Structure
 
-## 📁 Project Structure
-
 ```text
 AI-INTERNSHIP-AGENT/
 ├── app.py                     # Main Streamlit application
