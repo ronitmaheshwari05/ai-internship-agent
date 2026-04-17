@@ -149,19 +149,55 @@ Open your browser at `http://localhost:8501` and start exploring internships!
 
 ## 📁 Project Structure
 
-```
-ai-internship-finder/
-├── app.py                  # Main Streamlit application
-├── agent.py                # Core AI agent logic
-├── prompts/
-│   └── internship_prompt.py  # Optimized LLM prompt template
+AI-INTERNSHIP-AGENT/
+├── app.py                     # Main Streamlit application
+├── config.py                  # Configuration settings
+├── requirements.txt
+├── README.md
+├── .env                       # Environment variables (ignored)
+├── .env.example               # Sample environment config
+├── .gitignore
+├── venv/                      # Virtual environment (ignored)
+├── .venv/                     # Virtual environment (ignored)
+
+├── data/
+│   ├── raw/                   # Raw data (future use)
+│   └── processed/             # Processed data (future use)
+
 ├── docs/
 │   └── flowcharts/
-│       └── flowchart.png   # System workflow diagram
-├── .env.example            # Sample environment config
-├── requirements.txt
-└── README.md
-```
+│       ├── flowchart.png
+│       └── FlowchartFeatures.png
+
+├── logs/                      # Application logs
+
+├── src/
+│   ├── agent/
+│   │   ├── agent.py           # Core AI agent logic
+│   │   └── prompts.py         # Prompt templates
+│
+│   ├── database/
+│   │   ├── db.py              # Database connection & queries (Phase 2)
+│   │   └── models.py          # Data models
+│
+│   ├── evaluation/
+│   │   ├── evaluator.py       # Evaluation logic
+│   │   └── metrics.py         # Performance metrics
+│
+│   ├── features/
+│   │   ├── auth/
+│   │   │   └── auth.py        # Authentication module (planned)
+│   │   ├── internship/
+│   │   │   ├── fetcher.py     # Internship fetching logic
+│   │   │   └── filters.py     # Filtering logic
+│   │   └── resume_builder/
+│   │       └── builder.py     # Resume builder module (planned)
+│
+│   └── utils/
+│       └── helpers.py         # Utility functions
+
+├── tests/
+│   └── test_agent.py          # Unit tests
 
 ---
 
