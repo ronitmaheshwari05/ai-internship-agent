@@ -1,6 +1,9 @@
 import streamlit as st
 import re
 from src.agent.agent import get_internship_suggestions
+from src.database.db import create_table, insert_search
+
+create_table()
 
 # Page config
 st.set_page_config(page_title="AI Internship Finder", layout="centered")
@@ -19,7 +22,9 @@ if st.button("Find Internships"):
         with st.spinner("Finding best internships for you... 🔍"):
             suggestions = get_internship_suggestions(skills, location)
 
-        st.subheader("🔍 Suggested Internship Roles:")
+        insert_search(skills, location, suggestions)
+
+        st.subheader(" Suggested Internship Roles:")
 
         # Split response into lines
         roles = suggestions.split("\n")
