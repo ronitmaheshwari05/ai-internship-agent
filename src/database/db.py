@@ -36,8 +36,11 @@ def insert_search(skills, location, response):
         VALUES (?, ?, ?, ?)
     """, (skills, location, response, datetime.now()))
 
+    search_id = cursor.lastrowid
     conn.commit()
     conn.close()
+
+    return search_id
 
 
 def get_recent_searches(limit=5):

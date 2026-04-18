@@ -1,7 +1,7 @@
 import streamlit as st
 import re
 from src.agent.agent import get_internship_suggestions
-from src.database.db import create_table, get_recent_searches
+from src.database.db import create_table, delete_search, get_recent_searches
 
 
 # Create DB Table
@@ -20,6 +20,9 @@ if "location" not in st.session_state:
 
 if "saved_output" not in st.session_state:
     st.session_state.saved_output = ""
+
+if "selected_search_id" not in st.session_state:
+    st.session_state.selected_search_id = None
 
 
 # Helper Function
@@ -62,13 +65,33 @@ for item in history:
     st.sidebar.markdown(f"### 📍 {item.location}")
     st.sidebar.caption(item.skills)
 
-    if st.sidebar.button(
-        f"Open Search {item.id}",
-        key=f"load_{item.id}"
-    ):
-        st.session_state.skills = item.skills
-        st.session_state.location = item.location
-        st.session_state.saved_output = item.response
+    open_col, delete_col = st.sidebar.columns([3, 1])
+
+    with open_col:
+        if st.button(
+            f"Open Search {item.id}",
+            key=f"load_{item.id}",
+            use_container_width=True
+        ):
+            st.session_state.skills = item.skills
+            st.session_state.location = item.location
+            st.session_state.saved_output = item.response
+            st.session_state.selected_search_id = item.id
+            st.rerun()
+
+    with delete_col:
+        if st.button(
+            "Delete",
+            key=f"delete_{item.id}",
+            use_container_width=True
+        ):
+            delete_search(item.id)
+
+            if st.session_state.selected_search_id == item.id:
+                st.session_state.saved_output = ""
+                st.session_state.selected_search_id = None
+
+            st.rerun()
 
     st.sidebar.divider()
 
@@ -89,7 +112,20 @@ location = st.text_input(
 show_previous = bool(st.session_state.saved_output)
 
 if show_previous:
-    st.subheader("Previous Search Result:")
+    result_title_col, result_action_col = st.columns([4, 1])
+
+    with result_title_col:
+        st.subheader("Previous Search Result:")
+
+    with result_action_col:
+        if st.button("Delete Result", key="delete_current_result"):
+            if st.session_state.selected_search_id is not None:
+                delete_search(st.session_state.selected_search_id)
+
+            st.session_state.saved_output = ""
+            st.session_state.selected_search_id = None
+            st.rerun()
+
     display_roles(st.session_state.saved_output)
 
 
@@ -109,10 +145,11 @@ if show_button:
     if st.button("Find Internships"):
 
         with st.spinner("Finding best internships for you... "):
-            suggestions = get_internship_suggestions(skills, location)
+            suggestions, search_id = get_internship_suggestions(skills, location)
 
         st.session_state.skills = skills
         st.session_state.location = location
         st.session_state.saved_output = suggestions
+        st.session_state.selected_search_id = search_id
 
         st.rerun()

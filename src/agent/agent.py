@@ -64,6 +64,6 @@ def get_internship_suggestions(skills, location):
 
      # Step 5: Store in database
 
-    insert_search(skills, location, output)
+    search_id = insert_search(skills, location, output)
 
-    return output
+    return output, search_id
