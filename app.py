@@ -118,7 +118,7 @@ if show_button:
 
     if st.button("Find Internships"):
 
-        with st.spinner("Finding best internships for you... 🔍"):
+        with st.spinner("Finding best internships for you... "):
             suggestions = get_internship_suggestions(skills, location)
 
         st.session_state.skills = skills
