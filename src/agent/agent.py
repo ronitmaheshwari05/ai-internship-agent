@@ -15,14 +15,14 @@ client = OpenAI(
 
 def get_internship_suggestions(skills, location):
 
-    # 🔹 Step 1: Fetch recent history (limit to avoid large prompt)
+    #  Step 1: Fetch recent history (limit to avoid large prompt)
     history = get_recent_searches(limit=3)
 
     history_text = ""
     for h in history:
-        history_text += f"Skills: {h[0]}, Location: {h[1]}\n"
+        history_text += f"Skills: {h.skills}, Location: {h.location}\n"
 
-    # 🔹 Step 2: Build prompt
+    #  Step 2: Build prompt
     prompt = f"""
     You are an AI internship assistant.
 
@@ -49,7 +49,7 @@ def get_internship_suggestions(skills, location):
     5. Role Name : Short Description
     """
 
-    # 🔹 Step 3: Call LLM
+    #  Step 3: Call LLM
     response = client.chat.completions.create(
         model="open-mistral-7b",
         messages=[{"role": "user", "content": prompt}],
@@ -58,7 +58,12 @@ def get_internship_suggestions(skills, location):
 
     output = response.choices[0].message.content
 
-    # 🔹 Step 4: Store in DB
+    #  step 4: clean response
+    output = response.choices[0].message.content.strip()
+    output = output.replace("**", "").strip()
+
+     # Step 5: Store in database
+
     insert_search(skills, location, output)
 
     return output
