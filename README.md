@@ -64,14 +64,32 @@ No sign-ups. No job board scraping. Just instant AI-driven personalization.
 
 ##  Features
 
-### Phase 1 (Completed ✅)
+### Phase 1 (Completed )
 
-- 🔍 **Skill-based suggestions** — Tailored roles based on what you know
-- 📍 **Location-aware filtering** — Relevant opportunities for your city or region
-- 🤖 **Mistral LLM integration** — Fast, accurate role recommendations
-- 🖥️ **Streamlit UI** — Clean, responsive, card-based result display
-- ⚡ **Optimized prompting** — Structured output with minimal hallucination
+-  **Skill-based suggestions** — Tailored roles based on what you know
+-  **Location-aware filtering** — Relevant opportunities for your city or region
+-  **Mistral LLM integration** — Fast, accurate role recommendations
+-  **Streamlit UI** — Clean, responsive, card-based result display
+-  **Optimized prompting** — Structured output with minimal hallucination
 
+### Phase 2 (In progress)
+
+#### Part 1 (Completed )
+
+-  **SQLite Database Integration** — Added persistent storage for user searches and generated internship suggestions  
+-  **Search History Tracking** — Stores skills, location, and AI-generated outputs for future retrieval  
+-  **Modular Database Architecture** — Introduced structured `db.py` and `models.py` for maintainable backend design  
+-  **Context Memory Setup** — Enabled fetching of recent searches to support context-aware prompt generation  
+-  **Improved Data Flow** — Connected AI agent with database for automatic save and retrieval operations  
+
+#### Part 2 (In Progress)
+
+-  **Recent Searches Sidebar** — Displays latest user searches in the Streamlit sidebar for quick access  
+-  **Clickable Search History** — Users can reopen previous searches and instantly view saved outputs  
+-  **History Without API Calls** — Loads stored responses directly from SQLite for faster experience  
+-  **Conditional Search Button Logic** — “Find Internships” button only appears for new or modified searches  
+-  **Enhanced Session State Handling** — Smoother navigation and memory between searches  
+-  **Upcoming:** Delete selected searches, clear full history, caching, analytics, and UI refinements  
 ---
 
 ##  Tech Stack
@@ -82,6 +100,7 @@ No sign-ups. No job board scraping. Just instant AI-driven personalization.
 | Frontend | Streamlit |
 | AI Model | Mistral API |
 | Config | python-dotenv |
+| Database | SQLite3 |
 
 ---
 
@@ -207,7 +226,7 @@ AI-INTERNSHIP-AGENT/
 | Phase | Feature | Status |
 |-------|---------|--------|
 | 1 | Core AI agent + Streamlit UI | ✅ Done |
-| 2 | Search history with database integration | 🔜 Upcoming |
+| 2 | Search history with database integration | ✅ Done |
 | 2 | Response caching & regeneration | 🔜 Upcoming |
 | 3 | Agent evaluation metrics dashboard | 🔜 Upcoming |
 | 3 | User authentication | 🔜 Upcoming |
