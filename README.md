@@ -257,6 +257,6 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting any changes.
 
 <div align="center">
 
-Made with ❤️ for students, by a student &nbsp;|&nbsp; GirlScript Summer of Code 2026
+Made with ❤️ for students, by a student &nbsp;|&nbsp; GirlScript Summer of Code 2026 
 
 </div>
