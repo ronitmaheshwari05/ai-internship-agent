@@ -258,7 +258,7 @@ AI-INTERNSHIP-AGENT/
 |-------|---------|--------|
 | 1 | Core AI agent + Streamlit UI | ✅ Done |
 | 2 | Search history with database integration | ✅ Done |
-| 2 | Response caching & regeneration | 🔜 Upcoming |
+| 2 | Response caching & regeneration | ✅ Done |
 | 3 | Agent evaluation metrics dashboard | 🔜 Upcoming |
 | 3 | User authentication | 🔜 Upcoming |
 | 4 | AI-based resume builder | 🔜 Upcoming |
