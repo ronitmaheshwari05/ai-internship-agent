@@ -34,7 +34,27 @@
 
 ##  Overview
 
-Finding the right internship is hard — especially when you're a student with limited time and specific skills. **AI Internship Finder Agent** cuts through the noise by using a large language model to generate **personalized, context-aware internship role suggestions** in seconds. Just enter your skills and location, and let the agent do the rest.
+Finding the right internship is often slow, confusing, and filled with irrelevant listings.
+
+**AI Internship Finder Agent** simplifies that process using AI.
+
+Users enter:
+
+- Skills  
+
+- Preferred location  
+
+The system returns **structured internship recommendations** with:
+
+- Company names  
+
+- Remote / Hybrid / Onsite mode  
+
+- Paid / Unpaid status  
+
+- Clean UI cards  
+
+- Search history memory
 
 ---
 
@@ -72,24 +92,35 @@ No sign-ups. No job board scraping. Just instant AI-driven personalization.
 -  **Streamlit UI** — Clean, responsive, card-based result display
 -  **Optimized prompting** — Structured output with minimal hallucination
 
-### Phase 2 (In progress)
+### Phase 2 (Completed)
 
-#### Part 1 (Completed )
+#### Part 1 (Completed)
 
--  **SQLite Database Integration** — Added persistent storage for user searches and generated internship suggestions  
--  **Search History Tracking** — Stores skills, location, and AI-generated outputs for future retrieval  
--  **Modular Database Architecture** — Introduced structured `db.py` and `models.py` for maintainable backend design  
--  **Context Memory Setup** — Enabled fetching of recent searches to support context-aware prompt generation  
--  **Improved Data Flow** — Connected AI agent with database for automatic save and retrieval operations  
+- **SQLite Database Integration** — Added persistent storage for user searches and generated internship suggestions  
+- **Search History Tracking** — Stores skills, location, and AI-generated outputs for future retrieval  
+- **Modular Database Architecture** — Introduced structured `db.py` and `models.py` for maintainable backend design  
+- **Context Memory Setup** — Enabled fetching of recent searches to support context-aware prompt generation  
+- **Improved Data Flow** — Connected AI agent with database for automatic save and retrieval operations  
 
-#### Part 2 (In Progress)
+#### Part 2 (Completed)
 
--  **Recent Searches Sidebar** — Displays latest user searches in the Streamlit sidebar for quick access  
--  **Clickable Search History** — Users can reopen previous searches and instantly view saved outputs  
--  **History Without API Calls** — Loads stored responses directly from SQLite for faster experience  
--  **Conditional Search Button Logic** — “Find Internships” button only appears for new or modified searches  
--  **Enhanced Session State Handling** — Smoother navigation and memory between searches  
--  **Upcoming:** Delete selected searches, clear full history, caching, analytics, and UI refinements  
+- **Recent Searches Sidebar** — Displays latest user searches in the Streamlit sidebar for quick access  
+- **Clickable Search History** — Users can reopen previous searches and instantly view saved outputs  
+- **History Without API Calls** — Loads stored responses directly from SQLite for faster experience  
+- **Conditional Search Button Logic** — “Find Internships” button only appears for new or modified searches  
+- **Enhanced Session State Handling** — Smoother navigation and state persistence between searches  
+- **Delete Selected Searches** — Users can remove individual searches directly from sidebar or results view  
+- **Quick Retrieval Workflow** — Instantly revisit previous searches without regenerating responses  
+
+#### Part 3 (Completed)
+
+- **Advanced Filters UI** — Added dropdown filters for work mode and compensation type  
+- **Remote / Hybrid / Onsite Filtering** — Users can narrow suggestions based on preferred work style  
+- **Paid / Unpaid Filtering** — Better visibility into compensation preferences  
+- **Enhanced Internship Cards** — Cleaner, more structured result display for better readability  
+- **Improved User Experience** — Faster navigation with interactive filtering system  
+- **Optimized Search Experience** — Better usability through smarter filtering and cleaner outputs  
+  
 ---
 
 ##  Tech Stack
