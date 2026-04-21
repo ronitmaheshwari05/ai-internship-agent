@@ -71,8 +71,8 @@ Rules:
 
 Format strictly like this:
 
-1. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified
-2. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified
+1. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified 
+2. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified 
 3. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified
 4. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified
 5. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified
