@@ -281,7 +281,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting any changes.
 
 ## 👤 Author
 
-**Ronit Maheshwari**
+**Ronit Maheshwari (CSE Student AI ML)**
 
 
 ---
