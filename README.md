@@ -210,6 +210,13 @@ Open your browser at `http://localhost:8501` and start exploring internships!
 
 ---
 
+---
+## Demo Video
+
+[Watch The AI Internship Finder in Action] (https://drive.google.com/file/d/18Hk-VCmsGPCC0ZezprhurC6YovvSwNp_/view?usp=share_link)
+
+---
+
 ##  Project Structure
 
 ```text
