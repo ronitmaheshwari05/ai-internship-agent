@@ -120,7 +120,19 @@ No sign-ups. No job board scraping. Just instant AI-driven personalization.
 - **Enhanced Internship Cards** — Cleaner, more structured result display for better readability  
 - **Improved User Experience** — Faster navigation with interactive filtering system  
 - **Optimized Search Experience** — Better usability through smarter filtering and cleaner outputs  
-  
+
+
+### Phase 3 (In Progress)
+#### Part 1 (Completed)
+
+- Recommendation Evaluation Dashboard
+- Custom scoring Metrics
+- Skill Match Analysis
+- Location Relevance Score
+- Format Accuracy Score
+- Diversity Score
+- Respone Count Validation
+- Overall Quality Score
 ---
 
 ##  Tech Stack
@@ -132,6 +144,7 @@ No sign-ups. No job board scraping. Just instant AI-driven personalization.
 | AI Model | Mistral API |
 | Config | python-dotenv |
 | Database | SQLite3 |
+| Evaluation Layer | Custom Python Metrics Engine | 
 
 ---
 

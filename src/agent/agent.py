@@ -50,8 +50,7 @@ def get_internship_suggestions(skills, location):
     prompt = f"""
 You are an AI internship recommendation assistant.
 
-Current User:
-Skills: {skills}
+User Skills: {skills}
 Preferred Location: {location}
 
 Past Searches:
@@ -60,22 +59,29 @@ Past Searches:
 Task:
 Suggest exactly 5 relevant internship opportunities based on the user's skills and preferred location.
 
-Rules:
-1. Prioritize internships in the user's preferred location.
-2. If suitable local roles are limited, include Remote or Hybrid opportunities.
-3. Suggestions may include global companies, but relevance to user skills is mandatory.
-4. Keep results short, clean, and professional.
-5. Do NOT use markdown symbols, bold text, bullets, or extra commentary.
-6. Mention whether the internship is Paid, Unpaid, or Not Specified.
-7. Mention work mode as Remote, Onsite, or Hybrid.
+IMPORTANT RULES:
 
-Format strictly like this:
+1. Output exactly 5 lines only.
+2. Each line must strictly follow this exact format:
 
-1. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified 
-2. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified 
-3. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified
-4. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified
-5. Internship Title at Company Name (Location) | Mode: Remote/Onsite/Hybrid | Compensation: Paid/Unpaid/Not Specified
+Role Title at Company Name (Location) | Mode: Remote/Hybrid/Onsite | Compensation: Paid/Unpaid/Not Specified | Expected Stipend Range: ₹X-Y/month or Not Specified | Duration: 1 Month / 2 Months / 3 Months / 6 Months / Flexible
+
+3. Do not skip any field.
+4. Do not use bullet points, markdown, stars, explanations, headings, or extra text.
+5. If any information is uncertain, write Not Specified.
+6. Prioritize internships in the user's preferred location first.
+7. If local opportunities are limited, include Remote or Hybrid roles.
+8. Expected Stipend Range must be realistic and role-specific, based on common market standards.
+9. Different internships should have different expected stipend ranges when appropriate.
+10. Do not present stipend ranges as guaranteed official compensation.
+
+Example Output:
+
+1. Backend Developer Intern at Zoho (Pune) | Mode: Onsite | Compensation: Paid | Expected Stipend Range: ₹20k-30k/month | Duration: 6 Months
+2. AI Research Intern at Infosys (Remote) | Mode: Remote | Compensation: Paid | Expected Stipend Range: ₹25k-40k/month | Duration: 3 Months
+3. Data Analyst Intern at TCS (Mumbai) | Mode: Hybrid | Compensation: Paid | Expected Stipend Range: ₹15k-25k/month | Duration: 3 Months
+4. Frontend Developer Intern at StartupHub (Bangalore) | Mode: Remote | Compensation: Paid | Expected Stipend Range: ₹10k-20k/month | Duration: Flexible
+5. Machine Learning Intern at Wipro (Hyderabad) | Mode: Onsite | Compensation: Not Specified | Expected Stipend Range: Not Specified | Duration: 2 Months
 """
 
     # -------------------------------

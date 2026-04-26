@@ -2,6 +2,7 @@ import streamlit as st
 import re
 from src.agent.agent import get_internship_suggestions
 from src.database.db import create_table, delete_search, get_recent_searches
+from src.evaluation.evaluator import evaluate_response
 
 # ------------------------------------------------
 # Create DB Table
@@ -70,6 +71,7 @@ def badge_color(mode):
 
     return "#9ca3af"
 
+
 def display_roles(output):
 
     roles = output.split("\n")
@@ -96,11 +98,9 @@ def display_roles(output):
 
         with st.container(border=True):
 
-            st.markdown(
-                f"### {main}"
-            )
+            st.markdown(f"### {main}")
 
-            col1, col2, col3 = st.columns([1,1,5])
+            col1, col2, col3 = st.columns([1, 1, 5])
 
             with col1:
                 st.markdown(
@@ -120,7 +120,7 @@ font-weight:600;">
 
             with col2:
                 st.markdown(
-                    """
+                    f"""
 <span style="
 background:#1f2937;
 color:#22c55e;
@@ -128,13 +128,45 @@ padding:6px 10px;
 border-radius:8px;
 font-size:13px;
 font-weight:600;">
-Paid
+{pay}
 </span>
 """,
                     unsafe_allow_html=True
                 )
 
             st.write("")
+
+
+def show_dashboard(skills, location, output):
+
+    report = evaluate_response(skills, location, output)
+
+    st.subheader("Evaluation Dashboard")
+
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        st.metric("Overall Score", f"{report['overall_score']}%")
+
+    with c2:
+        st.metric("Skill Match", f"{report['skill_match']}%")
+
+    with c3:
+        st.metric("Format Accuracy", f"{report['format_accuracy']}%")
+
+    c4, c5, c6 = st.columns(3)
+
+    with c4:
+        st.metric("Location Match", f"{report['location_match']}%")
+
+    with c5:
+        st.metric("Diversity", f"{report['diversity_score']}%")
+
+    with c6:
+        st.metric("Response Count", f"{report['response_count']}%")
+
+    st.progress(int(report["overall_score"] / 100 * 100))
+
 
 # ------------------------------------------------
 # Title
@@ -240,6 +272,17 @@ if show_previous:
             st.rerun()
 
     display_roles(st.session_state.saved_output)
+
+    st.info(
+        "These Intership suggestions are AI_generated recommendations based on your skiils and preferences. "
+        "For live openings, eligibilty and applications, please visit the official company carrers page."
+    )
+
+    show_dashboard(
+        st.session_state.skills,
+        st.session_state.location,
+        st.session_state.saved_output
+    )
 
 
 # ------------------------------------------------
