@@ -77,7 +77,7 @@ This agent takes a **simple 2-input approach** and turns it into intelligent, ac
 
 1. **Input** — User provides their skills and preferred location
 2. **Process** — A Mistral LLM interprets the query with an optimized prompt
-3. **Output** — Structured, relevant internship role suggestions rendered in a clean UI
+3. **Output** — Structured, relevant internship role suggestions rendered in a clean User Interface
 
 No sign-ups. No job board scraping. Just instant AI-driven personalization.
 
