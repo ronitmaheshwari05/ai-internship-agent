@@ -302,7 +302,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting any changes.
 
 ---
 
-## 👤 Author
+## 👤 Developer
 
 **Ronit Maheshwari (CSE Student AI ML)**
 
