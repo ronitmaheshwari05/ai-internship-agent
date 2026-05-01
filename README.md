@@ -143,9 +143,7 @@ User Input (Skills + Location)
 
 ### Current Demo
 
-https://github.com/YOUR_USERNAME/ai-internship-agent/raw/main/demo.mp4
-
-> To embed the video on GitHub, upload `demo.mp4` to your repository root and the link above will render it as a playable video directly in the README.
+[Watch the Demo on Google Drive](https://drive.google.com/file/d/18Hk-VCmsGPCC0ZezprhurC6YovvSwNp_/view?usp=sharing)
 
 ### Upcoming Demos
 
