@@ -24,6 +24,7 @@ An AI-powered agent that helps students discover relevant internship opportuniti
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [System Workflow](#system-workflow)
+- [Demo](#demo)
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
 - [Roadmap](#roadmap)
@@ -135,6 +136,24 @@ User Input (Skills + Location)
           v
  User → Careers Page
 ```
+
+---
+
+## Demo
+
+### Current Demo
+
+https://github.com/YOUR_USERNAME/ai-internship-agent/raw/main/demo.mp4
+
+> To embed the video on GitHub, upload `demo.mp4` to your repository root and the link above will render it as a playable video directly in the README.
+
+### Upcoming Demos
+
+| Feature | Status |
+|---|---|
+| User Authentication Flow | Coming Soon |
+| Resume Builder Walkthrough | Coming Soon |
+| RAG Integration Preview | Coming Soon |
 
 ---
 
