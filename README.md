@@ -204,19 +204,46 @@ streamlit run app.py
 ai-internship-agent/
 │
 ├── app.py
-├── README.md
+├── config.py
 ├── requirements.txt
-│
-├── src/
-│   ├── agent/
-│   ├── database/
-│   ├── evaluation/
-│   └── features/
+├── README.md
+├── CONTRIBUTING.md
+├── .env.example
+├── .gitignore
 │
 ├── docs/
 │   └── flowcharts/
+│       ├── flowchart.png
+│       └── FlowchartFeatures.png
+│
+├── src/
+│   ├── agent/
+│   │   ├── agent.py
+│   │   └── prompts.py
+│   │
+│   ├── database/
+│   │   ├── db.py
+│   │   └── models.py
+│   │
+│   ├── evaluation/
+│   │   ├── evaluator.py
+│   │   └── metrics.py
+│   │
+│   └── features/
+│       ├── auth/
+│       │   └── auth.py
+│       │
+│       ├── internship/
+│       │   ├── fetcher.py
+│       │   └── filters.py
+│       │
+│       ├── resume_builder/
+│       │   └── builder.py
+│       │
+│       └── utils/
 │
 └── tests/
+    └── test_agent.py
 ```
 
 ---
