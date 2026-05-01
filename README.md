@@ -1,16 +1,16 @@
 <div align="center">
 
-#  AI Internship Finder Agent
+# AI Internship Finder Agent
 
-**An AI-powered agent that helps students discover relevant internship opportunities based on their skills and preferred location.**
+An AI-powered agent that helps students discover relevant internship opportunities based on their skills and preferred location.
 
-[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.x-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io)
-[![Mistral AI](https://img.shields.io/badge/Mistral-AI-F97316?style=flat-square)](https://mistral.ai)
-[![GSSoC 2026](https://img.shields.io/badge/GSSoC-2026-6366F1?style=flat-square)](https://gssoc.girlscript.tech)
-[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=flat-square)](LICENSE)
+![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat-square&logo=python)
+![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red?style=flat-square&logo=streamlit)
+![Mistral](https://img.shields.io/badge/Mistral-AI%20Model-orange?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+![GSSoC 2026](https://img.shields.io/badge/GSSoC-2026-purple?style=flat-square)
 
-*Built as part of the **AI Agents for India** track under [GirlScript Summer of Code 2026](https://gssoc.girlscript.tech)*
+*Built as part of the AI Agents for India track under GirlScript Summer of Code 2026*
 
 </div>
 
@@ -18,299 +18,224 @@
 
 ## Table of Contents
 
-- [Overview](#-overview)
-- [Problem Statement](#-problem-statement)
-- [Solution](#-solution)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [System Workflow](#-system-workflow)
-- [Demo Video](#-demo-video)
-- [Getting Started](#-getting-started)
-- [Project Structure](#-project-structure)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [Author](#-author)
+- [Overview](#overview)
+- [Problem Statement](#problem-statement)
+- [Solution](#solution)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [System Workflow](#system-workflow)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [Developer](#developer)
 
 ---
 
-##  Overview
+## Overview
 
-Finding the right internship is often slow, confusing, and filled with irrelevant listings.
+Finding the right internship is often slow, confusing, and filled with irrelevant listings. The AI Internship Finder Agent simplifies that process using AI.
 
-**AI Internship Finder Agent** simplifies that process using AI.
-
-Users enter:
-
-- Skills  
-
-- Preferred location  
-
-The system returns **structured internship recommendations** with:
-
-- Company names  
-
-- Remote / Hybrid / Onsite mode  
-
-- Paid / Unpaid status  
-
-- Clean UI cards  
-
-- Search history memory
+Users provide their **skills** and **preferred location**, and the system returns structured internship recommendations including company names, work mode (remote/hybrid/onsite), compensation status, expected stipend, duration, and a searchable history of past queries — all presented through a clean card-based UI.
 
 ---
 
-##  Problem Statement
+## Problem Statement
 
 Students consistently face three core challenges in internship discovery:
 
 | Challenge | Impact |
-|-----------|--------|
-| Sifting through irrelevant listings | Wastes hours of research time |
-| No skill-based filtering | Mismatched applications, lower success rates |
-| Slow, generic suggestions | Discourages proactive job seeking |
+|---|---|
+| Irrelevant listings | Wastes hours of research time |
+| No skill-based filtering | Poor match with roles |
+| Slow, generic suggestions | Reduces motivation to apply |
 
 ---
 
-##  Solution
+## Solution
 
-This agent takes a **simple 2-input approach** and turns it into intelligent, actionable output:
+This agent takes a simple two-input approach and converts it into intelligent, structured output.
 
-1. **Input** — User provides their skills and preferred location
-2. **Process** — A Mistral LLM interprets the query with an optimized prompt
-3. **Output** — Structured, relevant internship role suggestions rendered in a clean User Interface
-
-No sign-ups. No job board scraping. Just instant AI-driven personalization.
+1. **Input** — Skills + Location
+2. **Process** — Mistral LLM processes an optimized prompt
+3. **Output** — Structured internship recommendations with direct links to company careers pages
 
 ---
 
-##  Features
+## Features
 
-### Phase 1 (Completed )
+### Phase 1 — Core Agent (Completed)
 
--  **Skill-based suggestions** — Tailored roles based on what you know
--  **Location-aware filtering** — Relevant opportunities for your city or region
--  **Mistral LLM integration** — Fast, accurate role recommendations
--  **Streamlit UI** — Clean, responsive, card-based result display
--  **Optimized prompting** — Structured output with minimal hallucination
+- Skill-based internship recommendations
+- Location-aware filtering
+- Mistral LLM integration
+- Clean Streamlit UI
+- Structured output format
 
-### Phase 2 (Completed)
+### Phase 2 — Database and User Experience (Completed)
 
-#### Part 1 (Completed)
+**Backend**
+- SQLite to PostgreSQL migration
+- Search history storage
+- Context-aware prompt memory
+- Modular database architecture
 
-- **SQLite Database Integration** — Added persistent storage for user searches and generated internship suggestions  
-- **Search History Tracking** — Stores skills, location, and AI-generated outputs for future retrieval  
-- **Modular Database Architecture** — Introduced structured `db.py` and `models.py` for maintainable backend design  
-- **Context Memory Setup** — Enabled fetching of recent searches to support context-aware prompt generation  
-- **Improved Data Flow** — Connected AI agent with database for automatic save and retrieval operations  
+**User Experience**
+- Recent searches sidebar with one-click reload
+- Delete search functionality
+- Session state handling
 
-#### Part 2 (Completed)
+**UI Improvements**
+- Work mode filters: Remote / Hybrid / Onsite
+- Compensation filters: Paid / Unpaid
+- Enhanced internship cards
 
-- **Recent Searches Sidebar** — Displays latest user searches in the Streamlit sidebar for quick access  
-- **Clickable Search History** — Users can reopen previous searches and instantly view saved outputs  
-- **History Without API Calls** — Loads stored responses directly from SQLite for faster experience  
-- **Conditional Search Button Logic** — “Find Internships” button only appears for new or modified searches  
-- **Enhanced Session State Handling** — Smoother navigation and state persistence between searches  
-- **Delete Selected Searches** — Users can remove individual searches directly from sidebar or results view  
-- **Quick Retrieval Workflow** — Instantly revisit previous searches without regenerating responses  
+### Phase 3 — Evaluation (In Progress)
 
-#### Part 3 (Completed)
+- Evaluation dashboard
+- Skill match scoring
+- Location relevance scoring
+- Format accuracy validation
+- Diversity scoring
+- Response count validation
+- Overall quality score
 
-- **Advanced Filters UI** — Added dropdown filters for work mode and compensation type  
-- **Remote / Hybrid / Onsite Filtering** — Users can narrow suggestions based on preferred work style  
-- **Paid / Unpaid Filtering** — Better visibility into compensation preferences  
-- **Enhanced Internship Cards** — Cleaner, more structured result display for better readability  
-- **Improved User Experience** — Faster navigation with interactive filtering system  
-- **Optimized Search Experience** — Better usability through smarter filtering and cleaner outputs  
-
-
-### Phase 3 (In Progress)
-#### Part 1 (Completed)
-
-- Recommendation Evaluation Dashboard
-- Custom scoring Metrics
-- Skill Match Analysis
-- Location Relevance Score
-- Format Accuracy Score
-- Diversity Score
-- Respone Count Validation
-- Overall Quality Score
 ---
 
-##  Tech Stack
+## Tech Stack
 
 | Layer | Technology |
-|-------|------------|
-| Language | Python 3.8+ |
+|---|---|
+| Language | Python |
 | Frontend | Streamlit |
 | AI Model | Mistral API |
+| Database | PostgreSQL (Neon) |
 | Config | python-dotenv |
-| Database | SQLite3 |
-| Evaluation Layer | Custom Python Metrics Engine | 
+| Evaluation | Custom Metrics Engine |
 
 ---
 
-##  System Workflow
+## System Workflow
 
 ```
 User Input (Skills + Location)
-        │
-        ▼
-  Prompt Builder
-        │
-        ▼
+          |
+          v
+   Prompt Builder
+          |
+          v
   Mistral LLM API
-        │
-        ▼
+          |
+          v
   Response Parser
-        │
-        ▼
-  Streamlit Card UI  ──►  User sees internship suggestions
+          |
+          v
+ Streamlit UI Cards
+          |
+          v
+ User → Careers Page
 ```
-
-> Full flowchart available at [`docs/flowcharts/flowchart.png`](docs/flowcharts/flowchart.png)
 
 ---
 
-##  Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Python 3.8 or above
-- A valid [Mistral API key](https://console.mistral.ai/)
+- Python 3.8+
+- Mistral API Key
+- PostgreSQL database URL (e.g., Neon)
 
-### 1. Clone the Repository
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/ai-internship-finder.git
-cd ai-internship-finder
+git clone https://github.com/YOUR_USERNAME/ai-internship-agent.git
+cd ai-internship-agent
 ```
 
-### 2. Install Dependencies
+### 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Configure Environment
+### 3. Set up environment variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file in the project root:
 
 ```env
-MISTRAL_API_KEY=your_api_key_here
+MISTRAL_API_KEY=your_api_key
+DATABASE_URL=your_postgres_url
 ```
 
-
-
-### 4. Run the App
+### 4. Run the application
 
 ```bash
 streamlit run app.py
 ```
 
-Open your browser at `http://localhost:8501` and start exploring internships!
-
 ---
 
----
-## Demo Video
+## Project Structure
 
-Watch the AI Internship Finder in action:
-
-[View Product Demo](https://drive.google.com/file/d/18Hk-VCmsGPCC0ZezprhurC6YovvSwNp_/view?usp=share_link)
-
----
-
-##  Project Structure
-
-```text
-AI-INTERNSHIP-AGENT/
-├── app.py                     # Main Streamlit application
-├── config.py                  # Configuration settings
-├── requirements.txt
+```
+ai-internship-agent/
+│
+├── app.py
 ├── README.md
-├── .env                       # Environment variables (ignored)
-├── .env.example               # Sample environment config
-├── .gitignore
-├── venv/                      # Virtual environment (ignored)
-├── .venv/                     # Virtual environment (ignored)
-
-├── data/
-│   ├── raw/                   # Raw data (future use)
-│   └── processed/             # Processed data (future use)
-
-├── docs/
-│   └── flowcharts/
-│       ├── flowchart.png
-│       └── FlowchartFeatures.png
-
-├── logs/                      # Application logs
-
+├── requirements.txt
+│
 ├── src/
 │   ├── agent/
-│   │   ├── agent.py           # Core AI agent logic
-│   │   └── prompts.py         # Prompt templates
-│
 │   ├── database/
-│   │   ├── db.py              # Database connection & queries (Phase 2)
-│   │   └── models.py          # Data models
-│
 │   ├── evaluation/
-│   │   ├── evaluator.py       # Evaluation logic
-│   │   └── metrics.py         # Performance metrics
+│   └── features/
 │
-│   ├── features/
-│   │   ├── auth/
-│   │   │   └── auth.py        # Authentication module (planned)
-│   │   ├── internship/
-│   │   │   ├── fetcher.py     # Internship fetching logic
-│   │   │   └── filters.py     # Filtering logic
-│   │   └── resume_builder/
-│   │       └── builder.py     # Resume builder module (planned)
+├── docs/
+│   └── flowcharts/
 │
-│   └── utils/
-│       └── helpers.py         # Utility functions
-
-├── tests/
-│   └── test_agent.py          # Unit tests
+└── tests/
 ```
+
 ---
 
-##  Roadmap
+## Roadmap
 
 | Phase | Feature | Status |
-|-------|---------|--------|
-| 1 | Core AI agent + Streamlit UI | ✅ Done |
-| 2 | Search history with database integration | ✅ Done |
-| 2 | Response caching & regeneration | ✅ Done |
-| 3 | Agent evaluation metrics dashboard | ✅ Done |
-| 3 | User authentication | 🔜 Upcoming |
-| 4 | AI-based resume builder | 🔜 Upcoming |
+|---|---|---|
+| 1 | Core AI agent and Streamlit UI | Done |
+| 2 | Database integration and search history | Done |
+| 2 | Caching system | Done |
+| 3 | Evaluation dashboard | Done |
+| 3 | User authentication | Upcoming |
+| 4 | Resume builder | Upcoming |
+| 4 | RAG integration | Planned |
 
 ---
 
-##  Contributing
+## Contributing
 
-Contributions are welcome! To get started:
+Contributions are welcome. To get started:
 
 1. Fork the repository
-2. Create a new branch: `git checkout -b feature/your-feature-name`
-3. Make your changes and commit: `git commit -m "Add your message here"`
-4. Push to your fork: `git push origin feature/your-feature-name`
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add your feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
 5. Open a Pull Request
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting any changes.
 
 ---
 
-## 👤 Developer
+## Developer
 
-**Ronit Maheshwari (CSE Student AI ML)**
-
+**Ronit Maheshwari**  
+B.Tech, Computer Science Engineering (AI & ML)
 
 ---
 
 <div align="center">
 
-Made with ❤️ for students, by a student &nbsp;|&nbsp; GirlScript Summer Of Code 2026
+If you found this project useful, consider starring the repository.
+
+Made with dedication under GirlScript Summer of Code 2026
 
 </div>
