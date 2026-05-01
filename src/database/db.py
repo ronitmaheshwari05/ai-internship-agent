@@ -1,5 +1,6 @@
 import os
 import psycopg2
+import time
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 
@@ -12,7 +13,24 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 # Connection
 # -------------------------------
 def get_connection():
-    return psycopg2.connect(DATABASE_URL)
+    retries = 5
+
+    for i in range(retries):
+        try:
+            conn = psycopg2.connect(
+                DATABASE_URL,
+                connect_timeout=5,
+                sslmode="require"
+            )
+            return conn
+
+        except psycopg2.OperationalError as e:
+            print(f"DB connection failed (attempt {i+1}/{retries})")
+
+            # Exponential backoff (1s, 2s, 4s, 8s...)
+            time.sleep(2 ** i)
+
+    raise Exception("Database connection failed after multiple retries")
 
 
 # -------------------------------

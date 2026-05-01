@@ -6,9 +6,13 @@ from src.database.db import create_table, delete_search, get_recent_searches
 from src.evaluation.evaluator import evaluate_response
 
 # ------------------------------------------------
-# Create DB Table
+# Safe DB Initialization (FIXED ✅)
 # ------------------------------------------------
-create_table()
+try:
+    create_table()
+except Exception:
+    print("DB not ready yet, skipping init")
+
 
 # ------------------------------------------------
 # Page Config
@@ -129,9 +133,8 @@ def display_roles(output):
             st.markdown(f"⏱ **{duration}**")
 
             # -------------------------------
-            # NEW: Careers + Search Buttons
+            # Careers Page Button
             # -------------------------------
-
             company_name = "Unknown"
 
             if " at " in role_title:
@@ -139,10 +142,10 @@ def display_roles(output):
                 company_name = company_part.split("(")[0].strip()
 
             company_query = urllib.parse.quote(company_name + " careers")
-            role_query = urllib.parse.quote(role_title + " internship")
 
-            st.markdown(
-                f"[🏢 Open {company_name} Careers Page](https://www.google.com/search?q={company_query})"
+            st.link_button(
+                f"🏢 Open {company_name} Careers",
+                f"https://www.google.com/search?q={company_query}"
             )
 
             st.write("")
@@ -200,7 +203,10 @@ st.sidebar.divider()
 # Sidebar history
 st.sidebar.title("Recent Searches")
 
-history = get_recent_searches(limit=5)
+try:
+    history = get_recent_searches(limit=5)
+except Exception:
+    history = []
 
 for item in history:
 
@@ -231,14 +237,17 @@ if st.session_state.saved_output:
 
     display_roles(st.session_state.saved_output)
 
-    st.info("These are AI-generated suggestions. Visit official company careers pages to apply.")
+    st.info(
+        "These are AI-generated suggestions. Visit official company careers pages to apply."
+    )
 
     show_dashboard(skills, location, st.session_state.saved_output)
 
 # Search button
 if st.button("Find Internships"):
 
-    suggestions, search_id = get_internship_suggestions(skills, location)
+    with st.spinner("Finding best internships for you..."):
+        suggestions, search_id = get_internship_suggestions(skills, location)
 
     st.session_state.saved_output = suggestions
     st.session_state.selected_search_id = search_id
