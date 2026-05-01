@@ -1,5 +1,6 @@
 import streamlit as st
 import re
+import urllib.parse
 from src.agent.agent import get_internship_suggestions
 from src.database.db import create_table, delete_search, get_recent_searches
 from src.evaluation.evaluator import evaluate_response
@@ -40,10 +41,9 @@ for key, value in defaults.items():
 # ------------------------------------------------
 def parse_role(role):
     role = re.sub(r"^\d+\.\s*", "", role.strip())
-
     parts = role.split("|")
 
-    main = parts[0].strip()
+    role_title = parts[0].strip()
 
     mode = "Not Specified"
     pay = "Not Specified"
@@ -62,7 +62,7 @@ def parse_role(role):
     if len(parts) > 4:
         duration = parts[4].replace("Duration:", "").strip()
 
-    return main, mode, pay, stipend, duration
+    return role_title, mode, pay, stipend, duration
 
 
 def badge_color(mode):
@@ -79,16 +79,14 @@ def badge_color(mode):
 
 
 def display_roles(output):
-
     roles = output.split("\n")
 
     for role in roles:
-
         role = role.strip()
         if not role:
             continue
 
-        main, mode, pay, stipend, duration = parse_role(role)
+        role_title, mode, pay, stipend, duration = parse_role(role)
 
         # Filters
         if st.session_state.mode_filter != "All":
@@ -103,20 +101,14 @@ def display_roles(output):
 
         with st.container(border=True):
 
-            st.markdown(f"### {main}")
+            st.markdown(f"### {role_title}")
 
             col1, col2 = st.columns([1, 1])
 
             with col1:
                 st.markdown(
                     f"""
-<span style="
-background:#1f2937;
-color:{mode_color};
-padding:6px 10px;
-border-radius:8px;
-font-size:13px;
-font-weight:600;">
+<span style="background:#1f2937;color:{mode_color};padding:6px 10px;border-radius:8px;font-size:13px;font-weight:600;">
 {mode}
 </span>
 """,
@@ -126,13 +118,7 @@ font-weight:600;">
             with col2:
                 st.markdown(
                     f"""
-<span style="
-background:#1f2937;
-color:#22c55e;
-padding:6px 10px;
-border-radius:8px;
-font-size:13px;
-font-weight:600;">
+<span style="background:#1f2937;color:#22c55e;padding:6px 10px;border-radius:8px;font-size:13px;font-weight:600;">
 {pay}
 </span>
 """,
@@ -142,11 +128,27 @@ font-weight:600;">
             st.markdown(f"💰 **{stipend}**")
             st.markdown(f"⏱ **{duration}**")
 
+            # -------------------------------
+            # NEW: Careers + Search Buttons
+            # -------------------------------
+
+            company_name = "Unknown"
+
+            if " at " in role_title:
+                company_part = role_title.split(" at ")[-1]
+                company_name = company_part.split("(")[0].strip()
+
+            company_query = urllib.parse.quote(company_name + " careers")
+            role_query = urllib.parse.quote(role_title + " internship")
+
+            st.markdown(
+                f"[🏢 Open {company_name} Careers Page](https://www.google.com/search?q={company_query})"
+            )
+
             st.write("")
 
 
 def show_dashboard(skills, location, output):
-
     report = evaluate_response(skills, location, output)
 
     st.subheader("Evaluation Dashboard")
@@ -177,14 +179,10 @@ def show_dashboard(skills, location, output):
 
 
 # ------------------------------------------------
-# Title
+# UI
 # ------------------------------------------------
 st.title("🎯 AI Internship Finder")
 
-
-# ------------------------------------------------
-# Sidebar Filters
-# ------------------------------------------------
 st.sidebar.title("Filters")
 
 st.session_state.mode_filter = st.sidebar.selectbox(
@@ -199,127 +197,50 @@ st.session_state.pay_filter = st.sidebar.selectbox(
 
 st.sidebar.divider()
 
-
-# ------------------------------------------------
-# Sidebar History
-# ------------------------------------------------
+# Sidebar history
 st.sidebar.title("Recent Searches")
 
 history = get_recent_searches(limit=5)
 
 for item in history:
 
-    st.sidebar.markdown(f"### 📍 {item.location}")
-    st.sidebar.caption(item.skills)
+    st.sidebar.markdown(f"### 📍 {item['location']}")
+    st.sidebar.caption(item["skills"])
 
     col1, col2 = st.sidebar.columns([3, 1])
 
     with col1:
-        if st.button(
-            f"Open {item.id}",
-            key=f"load_{item.id}",
-            use_container_width=True
-        ):
-            st.session_state.skills = item.skills
-            st.session_state.location = item.location
-            st.session_state.saved_output = item.response
-            st.session_state.selected_search_id = item.id
+        if st.button(f"Open {item['id']}", key=f"load_{item['id']}"):
+            st.session_state.skills = item["skills"]
+            st.session_state.location = item["location"]
+            st.session_state.saved_output = item["response"]
+            st.session_state.selected_search_id = item["id"]
             st.rerun()
 
     with col2:
-        if st.button(
-            "🗑",
-            key=f"delete_{item.id}",
-            use_container_width=True
-        ):
-            delete_search(item.id)
-
-            if st.session_state.selected_search_id == item.id:
-                st.session_state.saved_output = ""
-                st.session_state.selected_search_id = None
-
+        if st.button("🗑", key=f"delete_{item['id']}"):
+            delete_search(item["id"])
             st.rerun()
 
-    st.sidebar.divider()
-
-
-# ------------------------------------------------
 # Inputs
-# ------------------------------------------------
-skills = st.text_input(
-    "Enter your skills (comma-separated):",
-    value=st.session_state.skills
-)
+skills = st.text_input("Enter your skills:", value=st.session_state.skills)
+location = st.text_input("Enter location:", value=st.session_state.location)
 
-location = st.text_input(
-    "Enter your preferred location:",
-    value=st.session_state.location
-)
-
-
-# ------------------------------------------------
-# Show Previous Result
-# ------------------------------------------------
-show_previous = bool(st.session_state.saved_output)
-
-if show_previous:
-
-    col1, col2 = st.columns([4, 1])
-
-    with col1:
-        st.subheader("Previous Search Result")
-
-    with col2:
-        if st.button("Delete", key="delete_result"):
-
-            if st.session_state.selected_search_id:
-                delete_search(st.session_state.selected_search_id)
-
-            st.session_state.saved_output = ""
-            st.session_state.selected_search_id = None
-            st.rerun()
+# Show results
+if st.session_state.saved_output:
 
     display_roles(st.session_state.saved_output)
 
-    st.info(
-        "These internship suggestions are AI-generated recommendations based on your skills and preferences. "
-        "For live openings, eligibility, and applications, please visit the official company careers page."
-    )
+    st.info("These are AI-generated suggestions. Visit official company careers pages to apply.")
 
-    show_dashboard(
-        st.session_state.skills,
-        st.session_state.location,
-        st.session_state.saved_output
-    )
+    show_dashboard(skills, location, st.session_state.saved_output)
 
+# Search button
+if st.button("Find Internships"):
 
-# ------------------------------------------------
-# Search Button
-# ------------------------------------------------
-show_button = (
-    (skills.strip() and location.strip())
-    and
-    (
-        skills != st.session_state.skills
-        or location != st.session_state.location
-        or not show_previous
-    )
-)
+    suggestions, search_id = get_internship_suggestions(skills, location)
 
-if show_button:
+    st.session_state.saved_output = suggestions
+    st.session_state.selected_search_id = search_id
 
-    if st.button("Find Internships", use_container_width=True):
-
-        with st.spinner("Finding best internships for you..."):
-
-            suggestions, search_id = get_internship_suggestions(
-                skills,
-                location
-            )
-
-        st.session_state.skills = skills
-        st.session_state.location = location
-        st.session_state.saved_output = suggestions
-        st.session_state.selected_search_id = search_id
-
-        st.rerun()
+    st.rerun()

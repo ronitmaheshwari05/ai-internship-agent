@@ -1,136 +1,143 @@
-import sqlite3
-from datetime import datetime
-from src.database.models import SearchHistory
+import os
+import psycopg2
+from psycopg2.extras import RealDictCursor
+from dotenv import load_dotenv
 
-DB_name = "internship_agent.db"
+load_dotenv()
 
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+
+# -------------------------------
+# Connection
+# -------------------------------
 def get_connection():
-    return sqlite3.connect(DB_name)
+    return psycopg2.connect(DATABASE_URL)
 
+
+# -------------------------------
+# Create Table
+# -------------------------------
 def create_table():
     conn = get_connection()
-    cursor = conn.cursor()
+    cur = conn.cursor()
 
-    cursor.execute("""
-
-        CREATE TABLE IF NOT EXISTS search_history (
-
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS searches (
+            id SERIAL PRIMARY KEY,
             skills TEXT NOT NULL,
-
             location TEXT NOT NULL,
-
             response TEXT NOT NULL,
-
-            created_at TIMESTAMP NOT NULL
-
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
-
     """)
+
     conn.commit()
+    cur.close()
     conn.close()
 
+
+# -------------------------------
+# Insert Search
+# -------------------------------
 def insert_search(skills, location, response):
     conn = get_connection()
-    cursor = conn.cursor()
+    cur = conn.cursor()
 
-    cursor.execute("""
+    cur.execute(
+        """
+        INSERT INTO searches (skills, location, response)
+        VALUES (%s, %s, %s)
+        RETURNING id
+        """,
+        (skills, location, response)
+    )
 
-        INSERT INTO search_history (skills, location, response, created_at)
-
-        VALUES (?, ?, ?, ?)
-
-    """, (skills, location, response, datetime.now()))
-
-    search_id = cursor.lastrowid
+    search_id = cur.fetchone()[0]
 
     conn.commit()
-
+    cur.close()
     conn.close()
 
     return search_id
 
-# Respone Cache
+
+# -------------------------------
+# Get Cached Search
+# -------------------------------
 def get_cached_search(skills, location):
     conn = get_connection()
-    cursor = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
 
-    cursor.execute("""
-
-        SELECT id, skills, location, response, created_at
-
-        FROM search_history
-
-        WHERE LOWER(skills) = LOWER(?)
-
-        AND LOWER(location) = LOWER(?)
-
+    cur.execute(
+        """
+        SELECT * FROM searches
+        WHERE LOWER(skills) = LOWER(%s)
+        AND LOWER(location) = LOWER(%s)
         ORDER BY id DESC
-
         LIMIT 1
+        """,
+        (skills.strip(), location.strip())
+    )
 
-    """, (skills.strip(), location.strip()))
+    result = cur.fetchone()
 
-    row = cursor.fetchone()
-
+    cur.close()
     conn.close()
 
-    if row:
+    return result
 
-        return SearchHistory(*row)
 
-    return None
-
-# Recent Searches
+# -------------------------------
+# Get Recent Searches
+# -------------------------------
 def get_recent_searches(limit=5):
     conn = get_connection()
-    cursor = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
 
-    cursor.execute("""
-
-        SELECT id, skills, location, response, created_at
-
-        FROM search_history
-
+    cur.execute(
+        """
+        SELECT * FROM searches
         ORDER BY id DESC
+        LIMIT %s
+        """,
+        (limit,)
+    )
 
-        LIMIT ?
+    results = cur.fetchall()
 
-    """, (limit,))
-
-    rows = cursor.fetchall()
-
+    cur.close()
     conn.close()
 
-    return [SearchHistory(*row) for row in rows]
+    return results
 
-#delete one search
+
+# -------------------------------
+# Delete Search
+# -------------------------------
 def delete_search(search_id):
     conn = get_connection()
-    cursor = conn.cursor()
+    cur = conn.cursor()
 
-    cursor.execute("""
-
-        DELETE FROM search_history
-
-        WHERE id = ?
-
-    """, (search_id,))
+    cur.execute(
+        "DELETE FROM searches WHERE id = %s",
+        (search_id,)
+    )
 
     conn.commit()
+    cur.close()
     conn.close()
 
-#clear all history
+
+# -------------------------------
+# Clear All
+# -------------------------------
 def clear_history():
     conn = get_connection()
-    cursor = conn.cursor()
+    cur = conn.cursor()
 
-    cursor.execute("""
-
-        DELETE FROM search_history
-
-    """)
+    cur.execute("DELETE FROM searches")
 
     conn.commit()
+    cur.close()
     conn.close()
