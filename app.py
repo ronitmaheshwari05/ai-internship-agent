@@ -47,6 +47,8 @@ def parse_role(role):
 
     mode = "Not Specified"
     pay = "Not Specified"
+    stipend = "Not Specified"
+    duration = "Not Specified"
 
     if len(parts) > 1:
         mode = parts[1].replace("Mode:", "").strip()
@@ -54,7 +56,13 @@ def parse_role(role):
     if len(parts) > 2:
         pay = parts[2].replace("Compensation:", "").strip()
 
-    return main, mode, pay
+    if len(parts) > 3:
+        stipend = parts[3].replace("Expected Stipend Range:", "").strip()
+
+    if len(parts) > 4:
+        duration = parts[4].replace("Duration:", "").strip()
+
+    return main, mode, pay, stipend, duration
 
 
 def badge_color(mode):
@@ -62,10 +70,8 @@ def badge_color(mode):
 
     if mode == "remote":
         return "#22c55e"
-
     if mode == "hybrid":
         return "#facc15"
-
     if mode == "onsite":
         return "#3b82f6"
 
@@ -79,11 +85,10 @@ def display_roles(output):
     for role in roles:
 
         role = role.strip()
-
         if not role:
             continue
 
-        main, mode, pay = parse_role(role)
+        main, mode, pay, stipend, duration = parse_role(role)
 
         # Filters
         if st.session_state.mode_filter != "All":
@@ -100,7 +105,7 @@ def display_roles(output):
 
             st.markdown(f"### {main}")
 
-            col1, col2, col3 = st.columns([1, 1, 5])
+            col1, col2 = st.columns([1, 1])
 
             with col1:
                 st.markdown(
@@ -134,6 +139,9 @@ font-weight:600;">
                     unsafe_allow_html=True
                 )
 
+            st.markdown(f"💰 **{stipend}**")
+            st.markdown(f"⏱ **{duration}**")
+
             st.write("")
 
 
@@ -165,7 +173,7 @@ def show_dashboard(skills, location, output):
     with c6:
         st.metric("Response Count", f"{report['response_count']}%")
 
-    st.progress(int(report["overall_score"] / 100 * 100))
+    st.progress(int(report["overall_score"]))
 
 
 # ------------------------------------------------
@@ -274,8 +282,8 @@ if show_previous:
     display_roles(st.session_state.saved_output)
 
     st.info(
-        "These Intership suggestions are AI_generated recommendations based on your skiils and preferences. "
-        "For live openings, eligibilty and applications, please visit the official company carrers page."
+        "These internship suggestions are AI-generated recommendations based on your skills and preferences. "
+        "For live openings, eligibility, and applications, please visit the official company careers page."
     )
 
     show_dashboard(

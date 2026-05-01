@@ -20,7 +20,6 @@ client = OpenAI(
     base_url="https://api.mistral.ai/v1"
 )
 
-
 # -------------------------------
 # Main Function
 # -------------------------------
@@ -30,7 +29,6 @@ def get_internship_suggestions(skills, location):
     # Step 1: Check Cache First
     # -------------------------------
     cached = get_cached_search(skills, location)
-
     if cached:
         return cached.response, cached.id
 
@@ -40,7 +38,6 @@ def get_internship_suggestions(skills, location):
     history = get_recent_searches(limit=3)
 
     history_text = ""
-
     for h in history:
         history_text += f"Skills: {h.skills}, Location: {h.location}\n"
 
@@ -71,8 +68,8 @@ Role Title at Company Name (Location) | Mode: Remote/Hybrid/Onsite | Compensatio
 5. If any information is uncertain, write Not Specified.
 6. Prioritize internships in the user's preferred location first.
 7. If local opportunities are limited, include Remote or Hybrid roles.
-8. Expected Stipend Range must be realistic and role-specific, based on common market standards.
-9. Different internships should have different expected stipend ranges when appropriate.
+8. Expected Stipend Range must be realistic and role-specific.
+9. Different internships should have different expected stipend ranges.
 10. Do not present stipend ranges as guaranteed official compensation.
 
 Example Output:
@@ -88,21 +85,18 @@ Example Output:
     # Step 4: Call Mistral API
     # -------------------------------
     response = client.chat.completions.create(
-        model="open-mistral-7b",
+        model="mistral-small-latest",   # better than open-mistral-7b
         messages=[
             {"role": "user", "content": prompt}
         ],
-        temperature=0.3
+        temperature=0.2
     )
 
     # -------------------------------
     # Step 5: Clean Output
     # -------------------------------
     output = response.choices[0].message.content.strip()
-
-    output = output.replace("**", "")
-    output = output.replace("*", "")
-    output = output.strip()
+    output = output.replace("**", "").replace("*", "").strip()
 
     # -------------------------------
     # Step 6: Save to Database
