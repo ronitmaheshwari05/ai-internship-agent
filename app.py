@@ -35,6 +35,11 @@ if "ai_output" not in st.session_state:
     st.session_state.ai_output = ""
 
 # -------------------------------
+# UI
+# -------------------------------
+st.title("AI Internship Finder")
+
+# -------------------------------
 # COLOR FUNCTIONS
 # -------------------------------
 def get_mode_color(mode):
@@ -52,11 +57,6 @@ def get_pay_color(pay):
     if pay.lower() == "paid":
         return "#1e3a8a"
     return "#9ca3af"
-
-# -------------------------------
-# UI
-# -------------------------------
-st.title("AI Internship Finder")
 
 # -------------------------------
 # INPUTS
@@ -85,7 +85,6 @@ if st.button("Find Internships"):
         st.warning("Please enter both fields")
 
     else:
-        # Normalize input
         skills_clean = skills.strip().lower()
         location_clean = location.strip().lower()
 
@@ -125,21 +124,18 @@ if st.session_state.ai_output:
 
         parts = role.split("|")
 
-        # SAFE PARSING
         title = parts[0].strip()
         mode = parts[1].replace("Mode:", "").strip() if len(parts) > 1 else "N/A"
         pay = parts[2].replace("Compensation:", "").strip() if len(parts) > 2 else "N/A"
         stipend = parts[3].replace("Expected Stipend Range:", "").strip() if len(parts) > 3 else ""
         duration = parts[4].replace("Duration:", "").strip() if len(parts) > 4 else ""
 
-        # FILTER FIX
-        if mode_filter != "All" and mode.strip().lower() != mode_filter.strip().lower():
+        if mode_filter != "All" and mode.lower() != mode_filter.lower():
             continue
 
         shown += 1
 
         with st.container(border=True):
-
             st.markdown(f"### {title}")
             st.divider()
 
@@ -165,18 +161,17 @@ if st.session_state.ai_output:
 
             st.link_button("Careers Page", f"https://www.google.com/search?q={query}")
 
-    # IF NOTHING MATCHES FILTER
     if shown == 0:
         st.warning("No internships found for selected work mode")
 
-    # DISCLAIMER
+    # ✅ DISCLAIMER ADDED HERE
     st.info(
         "These are AI-generated internship suggestions. "
-        "Visit company careers pages for accurate and latest openings."
+        "Please visit official company career pages for accurate and latest openings."
     )
 
     # -------------------------------
-    # EVALUATION DASHBOARD
+    # Evaluation Dashboard
     # -------------------------------
     report = evaluate_response(
         st.session_state.skills,
@@ -205,7 +200,6 @@ st.sidebar.title("Recent Searches")
 
 history = get_recent_searches(limit=10)
 
-# REMOVE DUPLICATES
 unique = {}
 for item in history:
     key = (item["skills"], item["location"])
@@ -224,17 +218,13 @@ else:
 
         col1, col2 = st.sidebar.columns([2, 1])
 
-        # OPEN
         if col1.button("Open", key=f"open_{item['id']}"):
             st.session_state.skills = item["skills"]
             st.session_state.location = item["location"]
             st.session_state.ai_output = item["response"]
 
-        # DELETE (FIXED)
         if col2.button("Delete", key=f"delete_{item['id']}"):
-            for h in history:
-                if h["skills"] == item["skills"] and h["location"] == item["location"]:
-                    delete_search(h["id"])
+            delete_search(item["id"])
             st.rerun()
 
         st.sidebar.divider()

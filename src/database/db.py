@@ -14,7 +14,7 @@ def get_connection():
     try:
         return psycopg2.connect(
             DATABASE_URL,
-            connect_timeout=3,
+            connect_timeout=5,
             sslmode="require"
         )
     except Exception as e:
@@ -30,7 +30,7 @@ def normalize(text):
 
 
 # -------------------------------
-# Create Table
+# Create Table (NO user_id)
 # -------------------------------
 def create_table():
     conn = get_connection()
@@ -49,7 +49,7 @@ def create_table():
         )
     """)
 
-    # Fast lookup index
+    # Index for fast lookup
     cur.execute("""
         CREATE INDEX IF NOT EXISTS idx_search_lookup
         ON public.searches (LOWER(skills), LOWER(location))
@@ -61,7 +61,7 @@ def create_table():
 
 
 # -------------------------------
-# Insert Search (SAFE - NO DUPLICATES)
+# Insert Search (GLOBAL)
 # -------------------------------
 def insert_search(skills, location, response):
     conn = get_connection()
@@ -77,12 +77,10 @@ def insert_search(skills, location, response):
         cur.execute("""
             INSERT INTO public.searches (skills, location, response)
             VALUES (%s, %s, %s)
-            ON CONFLICT (skills, location) DO NOTHING
             RETURNING id
         """, (skills, location, response))
 
         result = cur.fetchone()
-
         conn.commit()
 
         return result[0] if result else None
@@ -97,7 +95,7 @@ def insert_search(skills, location, response):
 
 
 # -------------------------------
-# Get Cached Search
+# Get Cached Search (GLOBAL)
 # -------------------------------
 def get_cached_search(skills, location):
     conn = get_connection()
@@ -134,7 +132,7 @@ def get_cached_search(skills, location):
 
 
 # -------------------------------
-# Get Recent Searches
+# Get Recent Searches (GLOBAL)
 # -------------------------------
 def get_recent_searches(limit=5):
     conn = get_connection()
