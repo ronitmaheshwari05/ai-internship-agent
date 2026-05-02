@@ -18,7 +18,7 @@ client = OpenAI(
 def get_internship_suggestions(skills, location):
 
     # -------------------------------
-    # Cache (FIXED ✅)
+    # Cache
     # -------------------------------
     cached = get_cached_search(skills, location)
 
@@ -74,7 +74,7 @@ No extra text.
         output = "Error generating results."
 
     # -------------------------------
-    # Save (ALWAYS RUNS NOW ✅)
+    # Save
     # -------------------------------
     try:
         search_id = insert_search(skills, location, output)
