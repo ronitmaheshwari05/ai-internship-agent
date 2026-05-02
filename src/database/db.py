@@ -8,7 +8,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 # -------------------------------
-# Connection (RELIABLE)
+# Connection
 # -------------------------------
 def get_connection():
     try:
@@ -20,6 +20,13 @@ def get_connection():
     except Exception as e:
         print("DB CONNECTION ERROR:", e)
         return None
+
+
+# -------------------------------
+# Normalize Input
+# -------------------------------
+def normalize(text):
+    return text.strip().lower()
 
 
 # -------------------------------
@@ -42,13 +49,19 @@ def create_table():
         )
     """)
 
+    # Fast lookup index
+    cur.execute("""
+        CREATE INDEX IF NOT EXISTS idx_search_lookup
+        ON public.searches (LOWER(skills), LOWER(location))
+    """)
+
     conn.commit()
     cur.close()
     conn.close()
 
 
 # -------------------------------
-# Insert Search
+# Insert Search (SAFE - NO DUPLICATES)
 # -------------------------------
 def insert_search(skills, location, response):
     conn = get_connection()
@@ -57,21 +70,30 @@ def insert_search(skills, location, response):
 
     cur = conn.cursor()
 
-    cur.execute("""
-        INSERT INTO public.searches (skills, location, response)
-        VALUES (%s, %s, %s)
-        RETURNING id
-    """, (skills, location, response))
+    skills = normalize(skills)
+    location = normalize(location)
 
-    search_id = cur.fetchone()[0]
+    try:
+        cur.execute("""
+            INSERT INTO public.searches (skills, location, response)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (skills, location) DO NOTHING
+            RETURNING id
+        """, (skills, location, response))
 
-    conn.commit()
-    cur.close()
-    conn.close()
+        result = cur.fetchone()
 
-    print("✅ INSERTED:", search_id)   # debug confirmation
+        conn.commit()
 
-    return search_id
+        return result[0] if result else None
+
+    except Exception as e:
+        print("INSERT ERROR:", e)
+        return None
+
+    finally:
+        cur.close()
+        conn.close()
 
 
 # -------------------------------
@@ -84,14 +106,16 @@ def get_cached_search(skills, location):
 
     cur = conn.cursor()
 
+    skills = normalize(skills)
+    location = normalize(location)
+
     cur.execute("""
         SELECT id, skills, location, response
         FROM public.searches
-        WHERE LOWER(skills) = LOWER(%s)
-        AND LOWER(location) = LOWER(%s)
-        ORDER BY id DESC
+        WHERE LOWER(skills) = %s
+        AND LOWER(location) = %s
         LIMIT 1
-    """, (skills.strip(), location.strip()))
+    """, (skills, location))
 
     row = cur.fetchone()
 
@@ -110,7 +134,7 @@ def get_cached_search(skills, location):
 
 
 # -------------------------------
-# Get Recent Searches (FIXED)
+# Get Recent Searches
 # -------------------------------
 def get_recent_searches(limit=5):
     conn = get_connection()
@@ -122,7 +146,7 @@ def get_recent_searches(limit=5):
     cur.execute("""
         SELECT id, skills, location, response
         FROM public.searches
-        ORDER BY id DESC
+        ORDER BY created_at DESC
         LIMIT %s
     """, (limit,))
 
@@ -131,17 +155,15 @@ def get_recent_searches(limit=5):
     cur.close()
     conn.close()
 
-    # convert to clean dict list
-    results = []
-    for row in rows:
-        results.append({
+    return [
+        {
             "id": row[0],
             "skills": row[1],
             "location": row[2],
             "response": row[3]
-        })
-
-    return results
+        }
+        for row in rows
+    ]
 
 
 # -------------------------------
@@ -162,5 +184,3 @@ def delete_search(search_id):
     conn.commit()
     cur.close()
     conn.close()
-
-    print("🗑 DELETED:", search_id)
