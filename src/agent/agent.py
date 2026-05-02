@@ -23,7 +23,6 @@ def get_internship_suggestions(skills, location):
     cached = get_cached_search(skills, location)
 
     if cached:
-        # ⚠️ IMPORTANT: still save it as new history
         try:
             new_id = insert_search(skills, location, cached["response"])
         except:
