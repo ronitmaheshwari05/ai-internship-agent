@@ -164,7 +164,7 @@ if st.session_state.ai_output:
     if shown == 0:
         st.warning("No internships found for selected work mode")
 
-    # ✅ DISCLAIMER ADDED HERE
+    #  DISCLAIMER ADDED HERE
     st.info(
         "These are AI-generated internship suggestions. "
         "Please visit official company career pages for accurate and latest openings."
