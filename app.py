@@ -3,7 +3,15 @@ import urllib.parse
 from dotenv import load_dotenv
 
 from src.agent.agent import get_internship_suggestions
-from src.features.resume_builder.builder import generate_resume
+
+from src.features.resume_builder.builder import (
+    generate_resume,
+    generate_resume_html
+)
+
+from src.features.resume_builder.ats_score import (
+    calculate_ats_score
+)
 
 from src.database.db import (
     get_recent_searches,
@@ -25,9 +33,9 @@ create_table()
 # PAGE CONFIG
 # =====================================================
 st.set_page_config(
-    page_title="AI Internship Finder",
+    page_title="AI Internship Finder Agent",
     page_icon="🎯",
-    layout="centered"
+    layout="wide"
 )
 
 # =====================================================
@@ -41,9 +49,6 @@ if "location" not in st.session_state:
 
 if "ai_output" not in st.session_state:
     st.session_state.ai_output = ""
-
-if "resume_output" not in st.session_state:
-    st.session_state.resume_output = ""
 
 # =====================================================
 # COLOR FUNCTIONS
@@ -74,16 +79,20 @@ def get_pay_color(pay):
 # =====================================================
 # TITLE
 # =====================================================
-st.title("AI Internship Finder")
+st.title("AI Internship Finder Agent")
+
+st.caption(
+    "AI Internship Recommendations + ATS Resume Builder"
+)
 
 # =====================================================
 # INTERNSHIP FINDER
 # =====================================================
 st.header("AI Internship Suggestions")
 
-# -------------------------------
+# =====================================================
 # INPUTS
-# -------------------------------
+# =====================================================
 skills = st.text_input(
     "Enter your skills (comma separated):",
     value=st.session_state.skills
@@ -99,9 +108,9 @@ mode_filter = st.selectbox(
     ["All", "Remote", "Hybrid", "Onsite"]
 )
 
-# -------------------------------
+# =====================================================
 # SEARCH BUTTON
-# -------------------------------
+# =====================================================
 if st.button("Find Internships"):
 
     if not skills.strip() or not location.strip():
@@ -121,15 +130,21 @@ if st.button("Find Internships"):
             location_clean
         )
 
-        # USE CACHED RESULT
+        # =====================================================
+        # CACHE
+        # =====================================================
         if cached:
 
             st.session_state.ai_output = cached["response"]
 
-        # NEW API CALL
+        # =====================================================
+        # API CALL
+        # =====================================================
         else:
 
-            with st.spinner("Finding internships..."):
+            with st.spinner(
+                "Finding internships..."
+            ):
 
                 ai_output, _ = get_internship_suggestions(
                     skills_clean,
@@ -144,9 +159,9 @@ if st.button("Find Internships"):
                 ai_output
             )
 
-# -------------------------------
+# =====================================================
 # DEFAULT MESSAGE
-# -------------------------------
+# =====================================================
 if not st.session_state.ai_output:
 
     st.info(
@@ -154,7 +169,7 @@ if not st.session_state.ai_output:
     )
 
 # =====================================================
-# SHOW INTERNSHIP RESULTS
+# SHOW INTERNSHIPS
 # =====================================================
 if st.session_state.ai_output:
 
@@ -203,7 +218,9 @@ if st.session_state.ai_output:
             else ""
         )
 
+        # =====================================================
         # FILTER
+        # =====================================================
         if (
             mode_filter != "All"
             and mode.lower() != mode_filter.lower()
@@ -212,7 +229,9 @@ if st.session_state.ai_output:
 
         shown += 1
 
+        # =====================================================
         # CARD
+        # =====================================================
         with st.container(border=True):
 
             st.markdown(f"### {title}")
@@ -277,14 +296,18 @@ if st.session_state.ai_output:
                 f"https://www.google.com/search?q={query}"
             )
 
-    # FILTER NO RESULTS
+    # =====================================================
+    # NO RESULTS
+    # =====================================================
     if shown == 0:
 
         st.warning(
             "No internships found for selected work mode"
         )
 
+    # =====================================================
     # DISCLAIMER
+    # =====================================================
     st.info(
         "These are AI-generated internship suggestions. "
         "Please visit official company career pages "
@@ -341,100 +364,159 @@ if st.session_state.ai_output:
     )
 
 # =====================================================
-# AI RESUME BUILDER
+# RESUME BUILDER
 # =====================================================
 st.divider()
 
 st.header("AI Resume Builder")
 
-# -------------------------------
-# PERSONAL DETAILS
-# -------------------------------
-name = st.text_input("Full Name")
+st.info(
+    "Create ATS-friendly professional resumes "
+    "with AI-powered resume generation."
+)
 
-email = st.text_input("Email")
+# =====================================================
+# PERSONAL INFORMATION
+# =====================================================
+st.subheader("Personal Information")
 
-phone = st.text_input("Phone Number")
+col1, col2 = st.columns(2)
 
-linkedin = st.text_input("LinkedIn Profile")
+with col1:
 
-github = st.text_input("GitHub Profile")
+    name = st.text_input("Full Name")
 
-resume_location = st.text_input("Your Location")
+    email = st.text_input("Email")
 
-# -------------------------------
+    phone = st.text_input("Phone Number")
+
+with col2:
+
+    resume_location = st.text_input("Location")
+
+    linkedin = st.text_input("LinkedIn Profile")
+
+    github = st.text_input("GitHub / Portfolio")
+
+# =====================================================
+# TARGET ROLE
+# =====================================================
+target_role = st.selectbox(
+    "Target Internship Role",
+    [
+        "AI/ML Intern",
+        "Software Engineering Intern",
+        "Data Science Intern",
+        "Backend Developer Intern",
+        "Frontend Developer Intern",
+        "Cloud Intern",
+        "Cybersecurity Intern",
+        "Finance Intern",
+        "Marketing Intern",
+        "HR Intern",
+        "Business Analyst Intern"
+    ]
+)
+
+# =====================================================
 # EDUCATION
-# -------------------------------
+# =====================================================
 education = st.text_area(
-    "Education",
-    placeholder="""
-Enter your education details
-"""
+    "Education"
 )
 
-# -------------------------------
+# =====================================================
 # SKILLS
-# -------------------------------
+# =====================================================
 resume_skills = st.text_area(
-    "Skills",
-    placeholder="""
-Enter your skills here...
-
-Example:
-Python, Excel, Financial Analysis,
-SEO, Recruitment, SAP,
-Communication, Leadership
-"""
+    "Skills"
 )
 
-# -------------------------------
+# =====================================================
 # EXPERIENCE
-# -------------------------------
+# =====================================================
 experience = st.text_area(
-    "Experience (Optional)",
-    placeholder="""
-Enter your work experience,
-internships, freelancing,
-volunteering, etc.
-"""
+    "Experience"
 )
 
-# -------------------------------
+# =====================================================
 # PROJECTS
-# -------------------------------
+# =====================================================
 projects = st.text_area(
-    "Projects (Optional)",
-    placeholder="""
-Enter your academic,
-personal, or professional projects
-"""
+    "Projects"
 )
 
-# -------------------------------
+# =====================================================
 # CERTIFICATIONS
-# -------------------------------
+# =====================================================
 certifications = st.text_area(
-    "Certifications (Optional)",
-    placeholder="""
-Enter certifications or courses
-"""
+    "Certifications"
 )
 
-# -------------------------------
+# =====================================================
 # ACHIEVEMENTS
-# -------------------------------
+# =====================================================
 achievements = st.text_area(
-    "Achievements (Optional)",
-    placeholder="""
-Enter achievements,
-competitions, leadership roles, etc.
-"""
+    "Achievements"
 )
 
 # =====================================================
-# GENERATE RESUME
+# TEMPLATE SELECTION
 # =====================================================
-if st.button("Generate Resume"):
+template_style = st.selectbox(
+    "Resume Template",
+    [
+        "Modern Blue",
+        "Minimal ATS",
+        "Corporate Professional",
+        "Overleaf Style"
+    ]
+)
+
+# =====================================================
+# LIVE PREVIEW
+# =====================================================
+st.subheader("Live Resume Preview")
+
+preview_html = generate_resume_html(
+
+    name=name,
+
+    email=email,
+
+    phone=phone,
+
+    linkedin=linkedin,
+
+    github=github,
+
+    location=resume_location,
+
+    education=education,
+
+    skills=resume_skills,
+
+    experience=experience,
+
+    projects=projects,
+
+    certifications=certifications,
+
+    achievements=achievements,
+
+    template_style=template_style
+)
+
+st.components.v1.html(
+    preview_html,
+    height=900,
+    scrolling=True
+)
+
+# =====================================================
+# GENERATE RESUME BUTTON
+# =====================================================
+if st.button("Generate Resume PDF"):
 
     if not name or not email:
 
@@ -448,35 +530,88 @@ if st.button("Generate Resume"):
             "Generating Professional Resume..."
         ):
 
-            resume_output = generate_resume(
+            pdf_path = generate_resume(
+
                 name=name,
+
                 email=email,
+
                 phone=phone,
+
                 linkedin=linkedin,
+
                 github=github,
+
                 location=resume_location,
+
                 education=education,
+
                 skills=resume_skills,
+
                 experience=experience,
+
                 projects=projects,
+
                 certifications=certifications,
-                achievements=achievements
+
+                achievements=achievements,
+
+                template_style=template_style
             )
 
-        st.session_state.resume_output = resume_output
-
-# =====================================================
-# SHOW GENERATED RESUME
-# =====================================================
-if st.session_state.resume_output:
-
-    st.subheader("Generated Resume")
-
-    with st.container(border=True):
-
-        st.markdown(
-            st.session_state.resume_output
+        st.success(
+            "Resume generated successfully!"
         )
+
+        # =====================================================
+        # DOWNLOAD PDF
+        # =====================================================
+        with open(pdf_path, "rb") as pdf_file:
+
+            st.download_button(
+                label="Download Resume PDF",
+                data=pdf_file,
+                file_name=f"{name}_resume.pdf",
+                mime="application/pdf"
+            )
+
+        # =====================================================
+        # ATS SCORE
+        # =====================================================
+        ats = calculate_ats_score(
+
+            resume_text=
+            resume_skills
+            + " "
+            + experience
+            + " "
+            + projects,
+
+            target_role=target_role
+        )
+
+        st.subheader("ATS Resume Score")
+
+        st.metric(
+            "ATS Score",
+            f"{ats['score']}%"
+        )
+
+        # MATCHED
+        if ats["matched"]:
+
+            st.success(
+                "Matched Keywords: "
+                + ", ".join(ats["matched"])
+            )
+
+        # MISSING
+        if ats["missing"]:
+
+            st.warning(
+                "Missing Keywords: "
+                + ", ".join(ats["missing"])
+            )
 
 # =====================================================
 # SIDEBAR HISTORY
@@ -485,7 +620,9 @@ st.sidebar.title("Recent Searches")
 
 history = get_recent_searches(limit=10)
 
+# =====================================================
 # REMOVE DUPLICATES
+# =====================================================
 unique = {}
 
 for item in history:
@@ -501,12 +638,16 @@ for item in history:
 
 clean_history = list(unique.values())[:5]
 
+# =====================================================
 # EMPTY HISTORY
+# =====================================================
 if not clean_history:
 
     st.sidebar.write("No searches yet")
 
+# =====================================================
 # SHOW HISTORY
+# =====================================================
 else:
 
     for item in clean_history:

@@ -1,0 +1,126 @@
+<!-- ===================================================== -->
+<!-- overleaf.html -->
+<!-- Path:
+src/features/resume_builder/templates/overleaf.html -->
+<!-- ===================================================== -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Georgia, serif;
+            color: #111827;
+        }
+
+        .container {
+            display: flex;
+            width: 1000px;
+            margin: auto;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 30%;
+            background: #1e3a8a;
+            color: white;
+            padding: 35px;
+        }
+
+        .main {
+            width: 70%;
+            padding: 40px;
+            background: white;
+        }
+
+        h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar h2,
+        .main h2 {
+            margin-top: 28px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 6px;
+        }
+
+        .main h2 {
+            color: #1e3a8a;
+            border-bottom: 2px solid #1e3a8a;
+        }
+
+        .content {
+            white-space: pre-line;
+            line-height: 1.8;
+        }
+
+        p {
+            line-height: 1.7;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <h1>{{ name }}</h1>
+
+        <p>{{ email }}</p>
+        <p>{{ phone }}</p>
+        <p>{{ location }}</p>
+
+        <p>{{ linkedin }}</p>
+        <p>{{ github }}</p>
+
+        {% if skills %}
+        <h2>Skills</h2>
+        <div class="content">{{ skills }}</div>
+        {% endif %}
+
+        {% if certifications %}
+        <h2>Certifications</h2>
+        <div class="content">{{ certifications }}</div>
+        {% endif %}
+
+        {% if achievements %}
+        <h2>Achievements</h2>
+        <div class="content">{{ achievements }}</div>
+        {% endif %}
+
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        {% if education %}
+        <h2>Education</h2>
+        <div class="content">{{ education }}</div>
+        {% endif %}
+
+        {% if experience %}
+        <h2>Experience</h2>
+        <div class="content">{{ experience }}</div>
+        {% endif %}
+
+        {% if projects %}
+        <h2>Projects</h2>
+        <div class="content">{{ projects }}</div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

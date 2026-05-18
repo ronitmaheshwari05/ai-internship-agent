@@ -1,0 +1,137 @@
+<!-- ===================================================== -->
+<!-- minimal.html -->
+<!-- Path:
+src/features/resume_builder/templates/minimal.html -->
+<!-- ===================================================== -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+
+        body {
+            font-family: Helvetica, sans-serif;
+            margin: 0;
+            background: white;
+            color: #111827;
+        }
+
+        .container {
+            width: 850px;
+            margin: auto;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .top {
+            margin-bottom: 30px;
+        }
+
+        .top p {
+            color: #4b5563;
+            margin: 3px 0;
+        }
+
+        .section {
+            margin-top: 24px;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .line {
+            height: 1px;
+            background: #d1d5db;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            white-space: pre-line;
+            line-height: 1.8;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top">
+
+        <h1>{{ name }}</h1>
+
+        <p>{{ email }}</p>
+
+        <p>{{ phone }}</p>
+
+        <p>{{ location }}</p>
+
+        <p>{{ linkedin }} | {{ github }}</p>
+
+    </div>
+
+    {% if education %}
+    <div class="section">
+        <h2>Education</h2>
+        <div class="line"></div>
+        <div class="content">{{ education }}</div>
+    </div>
+    {% endif %}
+
+    {% if skills %}
+    <div class="section">
+        <h2>Skills</h2>
+        <div class="line"></div>
+        <div class="content">{{ skills }}</div>
+    </div>
+    {% endif %}
+
+    {% if experience %}
+    <div class="section">
+        <h2>Experience</h2>
+        <div class="line"></div>
+        <div class="content">{{ experience }}</div>
+    </div>
+    {% endif %}
+
+    {% if projects %}
+    <div class="section">
+        <h2>Projects</h2>
+        <div class="line"></div>
+        <div class="content">{{ projects }}</div>
+    </div>
+    {% endif %}
+
+    {% if certifications %}
+    <div class="section">
+        <h2>Certifications</h2>
+        <div class="line"></div>
+        <div class="content">{{ certifications }}</div>
+    </div>
+    {% endif %}
+
+    {% if achievements %}
+    <div class="section">
+        <h2>Achievements</h2>
+        <div class="line"></div>
+        <div class="content">{{ achievements }}</div>
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
