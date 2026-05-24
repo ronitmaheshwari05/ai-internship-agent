@@ -1,196 +1,289 @@
 <div align="center">
 
-# 🎯 AI Internship Finder Agent
+# AI Internship Finder Agent
 
-### An AI-powered agent that helps students discover relevant internship opportunities based on their skills and preferred location.
+### An AI-powered internship discovery platform with authentication, ATS resume generation, and intelligent internship recommendations.
 
 <br/>
 
-![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
-![Mistral](https://img.shields.io/badge/Mistral-AI%20Model-F7631B?style=for-the-badge)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-Authentication-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-NeonDB-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq-AI_API-FF6B00?style=for-the-badge)
+![Mistral](https://img.shields.io/badge/Mistral-AI_Model-F7631B?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)
 ![GSSoC 2026](https://img.shields.io/badge/GSSoC-2026-8B5CF6?style=for-the-badge)
 
 <br/>
 
-> Built as part of the **AI Agents for India** track under **GirlScript Summer of Code 2026**
+> Built under the AI Agents for India track during GirlScript Summer of Code 2026
 
 </div>
 
 ---
 
-## 📑 Table of Contents
+# Table of Contents
 
-- [Overview](#-overview)
-- [Problem Statement](#-problem-statement)
-- [Solution](#-solution)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [System Workflow](#-system-workflow)
-- [Demo](#-demo)
-- [Getting Started](#-getting-started)
-- [Project Structure](#-project-structure)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [Developer](#-developer)
-
----
-
-## 📌 Overview
-
-Finding the right internship is often slow, confusing, and filled with irrelevant listings. The **AI Internship Finder Agent** simplifies that process using AI.
-
-Users provide their **skills** and **preferred location**, and the system returns structured internship recommendations including company names, work mode (remote/hybrid/onsite), compensation status, expected stipend, duration, and a searchable history of past queries — all presented through a clean card-based UI.
+- [Overview](#overview)
+- [Problem Statement](#problem-statement)
+- [Solution](#solution)
+- [Core Features](#core-features)
+- [Authentication System](#authentication-system)
+- [Resume Builder](#resume-builder)
+- [Evaluation Dashboard](#evaluation-dashboard)
+- [Tech Stack](#tech-stack)
+- [System Workflow](#system-workflow)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [Project Structure](#project-structure)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [Developer](#developer)
+- [License](#license)
 
 ---
 
-## ❗ Problem Statement
+# Overview
 
-Students consistently face three core challenges in internship discovery:
+AI Internship Finder Agent is an AI-powered internship discovery platform designed to help students find relevant internship opportunities based on their technical skills, preferred location, and career interests.
+
+The platform combines modern AI workflows, authentication systems, resume generation, and evaluation metrics into a single application.
+
+The system provides:
+
+- Skill-based internship recommendations
+- AI-generated structured internship listings
+- Firebase authentication
+- PostgreSQL-based search history
+- ATS-friendly resume generation
+- Resume evaluation and ATS scoring
+- Personalized user experience
+- Modern Streamlit interface
+
+---
+
+# Problem Statement
+
+Students often face multiple challenges during internship discovery:
 
 | Challenge | Impact |
 |---|---|
-| Irrelevant listings | Wastes hours of research time |
-| No skill-based filtering | Poor match with roles |
-| Slow, generic suggestions | Reduces motivation to apply |
+| Irrelevant internship listings | Wasted application effort |
+| Generic recommendations | Low role relevance |
+| Lack of personalization | Poor user experience |
+| Weak resume quality | Reduced ATS compatibility |
+| No centralized workflow | Fragmented internship search process |
 
 ---
 
-## 💡 Solution
+# Solution
 
-This agent takes a simple two-input approach and converts it into intelligent, structured output.
+The platform provides a complete AI-assisted internship workflow.
 
-1. 🔤 **Input** — Skills + Location
-2. ⚙️ **Process** — Mistral LLM processes an optimized prompt
-3. 📋 **Output** — Structured internship recommendations with direct links to company careers pages
+## Workflow
 
----
+1. User authentication using Firebase
+2. Skills and location input
+3. AI-powered internship recommendation generation
+4. Structured internship presentation
+5. Search history storage in PostgreSQL
+6. ATS resume generation
+7. Resume quality evaluation
 
-## 🚀 Features
-
-### Phase 1 — Core Agent ✅
-
-- ✅ Skill-based internship recommendations
-- ✅ Location-aware filtering
-- ✅ Mistral LLM integration
-- ✅ Clean Streamlit UI
-- ✅ Structured output format
-
-### Phase 2 — Database and User Experience ✅
-
-**🗄️ Backend**
-- ✅ SQLite to PostgreSQL migration
-- ✅ Search history storage
-- ✅ Context-aware prompt memory
-- ✅ Modular database architecture
-
-**🎨 User Experience**
-- ✅ Recent searches sidebar with one-click reload
-- ✅ Delete search functionality
-- ✅ Session state handling
-
-**🖼️ UI Improvements**
-- ✅ Work mode filters: Remote / Hybrid / Onsite
-- ✅ Compensation filters: Paid / Unpaid
-- ✅ Enhanced internship cards
-
-### Phase 3 — Evaluation 🔄
-
-- ✅ Evaluation dashboard
-- ✅ Skill match scoring
-- ✅ Location relevance scoring
-- ✅ Format accuracy validation
-- ✅ Diversity scoring
-- ✅ Response count validation
-- ✅ Overall quality score
+The system combines AI reasoning with structured filtering to improve recommendation quality and user experience.
 
 ---
 
-## 🛠️ Tech Stack
+# Core Features
+
+## AI Internship Recommendation Engine
+
+- Skill-based internship recommendations
+- Location-aware filtering
+- Work mode filtering
+- Structured internship formatting
+- AI-generated recommendations
+- Career page linking
+
+---
+
+## Search History System
+
+- PostgreSQL-based storage
+- Persistent recent searches
+- Cached search responses
+- Search deletion support
+- Sidebar search management
+
+---
+
+## Streamlit User Interface
+
+- Responsive dashboard
+- Card-based internship UI
+- Session state management
+- Sidebar controls
+- Interactive filters
+- Clean professional layout
+
+---
+
+# Authentication System
+
+The platform integrates Firebase Authentication for secure user access.
+
+## Features
+
+- User signup
+- User login
+- Secure session handling
+- Protected dashboard access
+- Logout functionality
+- Firebase-backed authentication flow
+
+---
+
+# Resume Builder
+
+The application includes a built-in ATS-friendly resume generation system.
+
+## Features
+
+- Resume generation using structured inputs
+- Multiple resume templates
+- Live HTML preview
+- PDF export functionality
+- ATS optimization support
+
+---
+
+# Evaluation Dashboard
+
+The platform includes a custom evaluation engine for both recommendations and resumes.
+
+## Internship Recommendation Evaluation
+
+- Skill match score
+- Location relevance score
+- Diversity score
+- Format accuracy validation
+- Response count analysis
+- Overall recommendation quality score
+
+## ATS Resume Evaluation
+
+- ATS score calculation
+- Keyword matching
+- Missing keyword detection
+- Resume optimization feedback
+
+---
+
+# Tech Stack
 
 | Layer | Technology |
 |---|---|
-| 🐍 Language | Python |
-| 🖥️ Frontend | Streamlit |
-| 🤖 AI Model | Mistral API |
-| 🗄️ Database | PostgreSQL (Neon) |
-| ⚙️ Config | python-dotenv |
-| 📊 Evaluation | Custom Metrics Engine |
+| Programming Language | Python |
+| Frontend | Streamlit |
+| AI Models | Mistral AI, Groq API |
+| Authentication | Firebase Authentication |
+| Database | PostgreSQL (Neon DB) |
+| Resume Generation | HTML + PDF |
+| Environment Management | python-dotenv |
+| Version Control | Git + GitHub |
 
 ---
 
-## 🔄 System Workflow
+# System Workflow
 
+```text
+User Authentication
+        ↓
+Firebase Authentication
+        ↓
+Skills + Location Input
+        ↓
+AI Recommendation Engine
+        ↓
+Mistral + Groq Processing
+        ↓
+Structured Internship Generation
+        ↓
+PostgreSQL Search Storage
+        ↓
+ATS Resume Builder + Evaluation
 ```
-🧑 User Input (Skills + Location)
-          |
-          v
-  🔧 Prompt Builder
-          |
-          v
-  🤖 Mistral LLM API
-          |
-          v
-  📦 Response Parser
-          |
-          v
-  🃏 Streamlit UI Cards
-          |
-          v
-  🌐 User → Careers Page
+
+---
+
+# Architecture
+
+```text
+Frontend Layer
+└── Streamlit UI
+
+Authentication Layer
+└── Firebase Authentication
+
+AI Layer
+├── Prompt Engineering
+├── Internship Recommendation Engine
+├── Evaluation Engine
+└── ATS Resume Scoring
+
+LLM Integration
+├── Mistral AI
+└── Groq API
+
+Database Layer
+└── Neon PostgreSQL
 ```
 
 ---
 
-## 🎥 Demo
+# Installation
 
-### Current Demo
-
-▶️ [Watch the Demo on Google Drive](https://drive.google.com/file/d/18Hk-VCmsGPCC0ZezprhurC6YovvSwNp_/view?usp=sharing)
-
-### Upcoming Demos
-
-| Feature | Status |
-|---|---|
-| 🔐 User Authentication Flow | 🔜 Coming Soon |
-| 📄 Resume Builder Walkthrough | 🔜 Coming Soon |
-| 🧠 RAG Integration Preview | 🔜 Coming Soon |
-
----
-
-## ⚙️ Getting Started
-
-### Prerequisites
-
-- 🐍 Python 3.8+
-- 🔑 Mistral API Key
-- 🗄️ PostgreSQL database URL (e.g., Neon)
-
-### 1️⃣ Clone the repository
+## Clone Repository
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/ai-internship-agent.git
+
 cd ai-internship-agent
 ```
 
-### 2️⃣ Install dependencies
+---
+
+## Create Virtual Environment
+
+### Windows
+
+```bash
+python -m venv .venv
+
+.venv\Scripts\activate
+```
+
+### macOS/Linux
+
+```bash
+python3 -m venv .venv
+
+source .venv/bin/activate
+```
+
+---
+
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3️⃣ Set up environment variables
+---
 
-Create a `.env` file in the project root:
-
-```env
-MISTRAL_API_KEY=your_api_key
-DATABASE_URL=your_postgres_url
-```
-
-### 4️⃣ Run the application
+## Run Application
 
 ```bash
 streamlit run app.py
@@ -198,25 +291,40 @@ streamlit run app.py
 
 ---
 
-## 📂 Project Structure
+# Environment Variables
 
+Create a `.env` file in the root directory.
+
+```env
+MISTRAL_API_KEY=your_mistral_api_key
+
+GROQ_API_KEY=your_groq_api_key
+
+DATABASE_URL=your_neon_postgresql_url
+
+FIREBASE_API_KEY=your_firebase_api_key
+FIREBASE_AUTH_DOMAIN=your_auth_domain
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_STORAGE_BUCKET=your_storage_bucket
+FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+FIREBASE_APP_ID=your_app_id
 ```
+
+---
+
+# Project Structure
+
+```text
 ai-internship-agent/
 │
 ├── app.py
-├── config.py
 ├── requirements.txt
 ├── README.md
-├── CONTRIBUTING.md
 ├── .env.example
 ├── .gitignore
 │
-├── docs/
-│   └── flowcharts/
-│       ├── flowchart.png
-│       └── FlowchartFeatures.png
-│
 ├── src/
+│
 │   ├── agent/
 │   │   ├── agent.py
 │   │   └── prompts.py
@@ -230,63 +338,98 @@ ai-internship-agent/
 │   │   └── metrics.py
 │   │
 │   └── features/
+│       │
 │       ├── auth/
 │       │   └── auth.py
 │       │
 │       ├── internship/
-│       │   ├── fetcher.py
-│       │   └── filters.py
+│       │   └── fetcher.py
 │       │
 │       ├── resume_builder/
-│       │   └── builder.py
+│       │   ├── builder.py
+│       │   ├── ats_score.py
+│       │   ├── pdf_generator.py
+│       │   └── templates/
 │       │
 │       └── utils/
 │
+├── generated_resumes/
+│
+├── logs/
+│
 └── tests/
-    └── test_agent.py
 ```
 
 ---
 
-## 🗺️ Roadmap
+# Roadmap
 
-| Phase | Feature | Status |
-|---|---|---|
-| 1 | Core AI agent and Streamlit UI | ✅ Done |
-| 2 | Database integration and search history | ✅ Done |
-| 2 | Caching system | ✅ Done |
-| 3 | Evaluation dashboard | ✅ Done |
-| 3 | User authentication | 🔜 Upcoming |
-| 4 | Resume builder | 🔜 Upcoming |
-| 4 | RAG integration | 🗓️ Planned |
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! To get started:
-
-1. 🍴 Fork the repository
-2. 🌿 Create a feature branch (`git checkout -b feature/your-feature`)
-3. 💾 Commit your changes (`git commit -m 'Add your feature'`)
-4. 📤 Push to the branch (`git push origin feature/your-feature`)
-5. 🔁 Open a Pull Request
+| Feature | Status |
+|---|---|
+| AI Internship Recommendation Engine | Completed |
+| PostgreSQL Integration | Completed |
+| Search History System | Completed |
+| Firebase Authentication | Completed |
+| ATS Resume Builder | Completed |
+| Evaluation Dashboard | Completed |
+| Personalized User Search History | In Progress |
+| Internship Bookmarking System | Planned |
+| Resume Storage System | Planned |
+| Google Authentication | Planned |
+| RAG-based Recommendations | Planned |
+| Deployment | Planned |
 
 ---
 
-## 👨‍💻 Developer
+# Contributing
 
-**Ronit Maheshwari**  
-B.Tech, Computer Science Engineering (AI & ML)
+Contributions are welcome.
+
+## Contribution Workflow
+
+1. Fork the repository
+2. Create a feature branch
+
+```bash
+git checkout -b feature/your-feature
+```
+
+3. Commit changes
+
+```bash
+git commit -m "Added new feature"
+```
+
+4. Push changes
+
+```bash
+git push origin feature/your-feature
+```
+
+5. Open a Pull Request
+
+---
+
+# Developer
+
+## Ronit Maheshwari
+
+B.Tech Computer Science Engineering (AI & ML)
+
+AI/ML Developer and Open Source Contributor
+
+---
+
+# License
+
+This project is licensed under the MIT License.
 
 ---
 
 <div align="center">
 
-⭐ If you found this project useful, consider starring the repository
+If you found this project useful, consider starring the repository.
 
-<br/>
-
-Made with ❤️ under **GirlScript Summer of Code 2026**
+Built during GirlScript Summer of Code 2026.
 
 </div>
