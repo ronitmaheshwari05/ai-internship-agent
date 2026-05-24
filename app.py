@@ -4,6 +4,11 @@ from dotenv import load_dotenv
 
 from src.agent.agent import get_internship_suggestions
 
+from src.features.auth.auth import (
+    signup,
+    login
+)
+
 from src.features.resume_builder.builder import (
     generate_resume,
     generate_resume_html
@@ -49,6 +54,125 @@ if "location" not in st.session_state:
 
 if "ai_output" not in st.session_state:
     st.session_state.ai_output = ""
+
+if "user" not in st.session_state:
+    st.session_state.user = None
+
+if "uid" not in st.session_state:
+    st.session_state.uid = None
+
+# =====================================================
+# AUTHENTICATION
+# =====================================================
+
+st.sidebar.title("🔐 Authentication")
+
+# =====================================================
+# LOGGED IN USER
+# =====================================================
+
+if st.session_state.user:
+
+    st.sidebar.success(
+        f"Logged in as {st.session_state.user}"
+    )
+
+    if st.sidebar.button("Logout"):
+
+        st.session_state.user = None
+        st.session_state.uid = None
+
+        st.rerun()
+
+# =====================================================
+# LOGIN / SIGNUP
+# =====================================================
+
+else:
+
+    auth_mode = st.sidebar.selectbox(
+        "Choose Mode",
+        ["Login", "Signup"]
+    )
+
+    auth_email = st.sidebar.text_input(
+        "Email"
+    )
+
+    auth_password = st.sidebar.text_input(
+        "Password",
+        type="password"
+    )
+
+    # =====================================================
+    # SIGNUP
+    # =====================================================
+
+    if auth_mode == "Signup":
+
+        if st.sidebar.button(
+            "Create Account"
+        ):
+
+            result = signup(
+                auth_email,
+                auth_password
+            )
+
+            if isinstance(result, dict):
+
+                st.sidebar.success(
+                    "Account Created Successfully!"
+                )
+
+            else:
+
+                st.sidebar.error(result)
+
+    # =====================================================
+    # LOGIN
+    # =====================================================
+
+    if auth_mode == "Login":
+
+        if st.sidebar.button("Login"):
+
+            result = login(
+                auth_email,
+                auth_password
+            )
+
+            if isinstance(result, dict):
+
+                st.session_state.user = auth_email
+
+                st.session_state.uid = result[
+                    "localId"
+                ]
+
+                st.sidebar.success(
+                    "Login Successful!"
+                )
+
+                st.rerun()
+
+            else:
+
+                st.sidebar.error(
+                    "Invalid email or password"
+                )
+
+# =====================================================
+# BLOCK APP IF NOT LOGGED IN
+# =====================================================
+
+if not st.session_state.user:
+
+    st.warning(
+        "Please login to access the AI Internship Finder Agent"
+    )
+
+    st.stop()
 
 # =====================================================
 # COLOR FUNCTIONS
@@ -563,9 +687,6 @@ if st.button("Generate Resume PDF"):
             "Resume generated successfully!"
         )
 
-        # =====================================================
-        # DOWNLOAD PDF
-        # =====================================================
         with open(pdf_path, "rb") as pdf_file:
 
             st.download_button(
@@ -575,9 +696,6 @@ if st.button("Generate Resume PDF"):
                 mime="application/pdf"
             )
 
-        # =====================================================
-        # ATS SCORE
-        # =====================================================
         ats = calculate_ats_score(
 
             resume_text=
@@ -597,7 +715,6 @@ if st.button("Generate Resume PDF"):
             f"{ats['score']}%"
         )
 
-        # MATCHED
         if ats["matched"]:
 
             st.success(
@@ -605,7 +722,6 @@ if st.button("Generate Resume PDF"):
                 + ", ".join(ats["matched"])
             )
 
-        # MISSING
         if ats["missing"]:
 
             st.warning(
@@ -620,9 +736,6 @@ st.sidebar.title("Recent Searches")
 
 history = get_recent_searches(limit=10)
 
-# =====================================================
-# REMOVE DUPLICATES
-# =====================================================
 unique = {}
 
 for item in history:
@@ -638,16 +751,10 @@ for item in history:
 
 clean_history = list(unique.values())[:5]
 
-# =====================================================
-# EMPTY HISTORY
-# =====================================================
 if not clean_history:
 
     st.sidebar.write("No searches yet")
 
-# =====================================================
-# SHOW HISTORY
-# =====================================================
 else:
 
     for item in clean_history:
@@ -662,7 +769,6 @@ else:
 
         col1, col2 = st.sidebar.columns([2, 1])
 
-        # OPEN
         if col1.button(
             "Open",
             key=f"open_{item['id']}"
@@ -674,7 +780,6 @@ else:
 
             st.session_state.ai_output = item["response"]
 
-        # DELETE
         if col2.button(
             "Delete",
             key=f"delete_{item['id']}"
